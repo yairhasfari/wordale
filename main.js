@@ -13,6 +13,8 @@ let rowCount = 1;
 let wordCount = 0;
 let currentWord = '';
 let answers = [];
+let numOfWordale=0;
+
 let listOfWords=["שגשוג","מפלצת","חיקוי","השלמה","טמטום","הקרבה","מצנפת","הטמעה","תכסיס","תתרכך","רמקול","שניצל","מנסרה","רטבים","נזהרת","חמדתי","להבין","גישור","תינוק","מצחיק","כיפור","פספוס","קזינו","צדדים","חיטוי","הרגעה","נסיעה","ספרדי","עניבה","סטייק","מרקדת","מפחיד","כוורת","גידול"];
 let pickedWord = pickWord();
 
@@ -21,6 +23,7 @@ function pickWord() {
     const startDate=new Date(2022,1,12);
     const today = new Date();
     let pickIndex = today.getDate()-startDate.getDate();
+    numOfWordale=pickIndex;
     console.log(listOfWords.length);
     return listOfWords[pickIndex];
 }
@@ -232,7 +235,7 @@ function checkSpell(word) {
 
 };
 function shareResults() {
-    let shareResult = "וורדל׳ה" + "\n";
+    let shareResult = `וורדלה # ${numOfWordale}` + "\n";
     shareResult += `נסיון ${wordCount} מתוך 6` + "\n";
     console.log(answers);
     for (i = 0; i < answers.length; i++) {
