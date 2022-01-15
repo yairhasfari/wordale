@@ -1,0 +1,357 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+</head>
+
+<body>
+    <h3 id="demo"></h3>
+    <h1 style="text-align: center;">וורדל׳ה</h1>
+    <div id="notify">
+    </div>
+    <div id="notify2">
+            <input type="button" id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
+    </div>
+
+    <style>
+#shareButton{
+
+            font-family: 'Secular One';
+            font-size: 1.2rem;
+            top: 0px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            background: transparent;
+            overflow: hidden;
+            box-sizing: border-box;
+            transition: height .2s;
+            border-color:transparent;
+            border-radius: 1rem;
+            visibility: hidden;
+}
+        #notify {
+            display: flex;
+            font-family: 'Secular One';
+            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            top: 0px;
+            width: auto;
+            max-width: 50%;
+            height: 0%;
+            box-sizing: border-box;
+            color: white;
+            text-align: center;
+            background: rgba(43, 43, 43, 0.6);
+            overflow: hidden;
+            box-sizing: border-box;
+            transition: height .2s;
+            border-radius: 1rem;
+            visibility: visible;
+        }
+
+        #notify2 {
+            display: flex;
+            font-family: 'Secular One';
+            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            margin: 4 auto;
+            top: 0px;
+            width: auto;
+            max-width: 50%;
+            height: 0%;
+            box-sizing: border-box;
+            color: white;
+            text-align: center;
+            background: rgba(43, 43, 43, 0.6);
+            overflow: hidden;
+            box-sizing: border-box;
+            transition: height .2s;
+            border-radius: 1rem;
+            visibility: visible;
+        }
+
+
+        #container {
+            display: flexbox;
+            font-family: 'Secular One';
+            font-size: 2em;
+
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row-reverse;
+            justify-content: center;
+        }
+
+        .tile {
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: solid rgb(212, 212, 212);
+            border-radius: 5px;
+            vertical-align: top;
+        }
+
+        .tile[data-animation='pop'] {
+            animation-name: PopIn;
+            animation-duration: 100ms;
+        }
+
+        @keyframes PopIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            40% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+        @media (min-width:200px) and (max-width:280px) {
+
+
+.tile {
+    margin: 2px;
+    width: 40px;
+            height: 40px;
+}
+}
+
+        @media (min-width:281px) and (max-width:400px) {
+
+
+            .tile {
+                margin: 2px;
+            }
+        }
+
+        @media (min-height:750px) and (max-width:900px) {
+
+
+            #container {
+                padding-top: 10%;
+                padding-bottom: 20%;
+            }
+        }
+
+        @media (min-width:401px) and (max-width:600px) {
+
+
+            .tile {
+                margin: 7px;
+            }
+        }
+    </style>
+    <div id="container">
+        <div class="row" id="row1">
+            <div class="tile" id="tile11" data-animation="idle"></div>
+            <div class="tile" id="tile12" data-animation="idle"></div>
+            <div class="tile" id="tile13" data-animation="idle"></div>
+            <div class="tile" id="tile14" data-animation="idle"></div>
+            <div class="tile" id="tile15" data-animation="idle"></div>
+        </div>
+        <div class="row" id="row2">
+            <div class="tile" id="tile21" data-animation="idle"></div>
+            <div class="tile" id="tile22" data-animation="idle"></div>
+            <div class="tile" id="tile23" data-animation="idle"></div>
+            <div class="tile" id="tile24" data-animation="idle"></div>
+            <div class="tile" id="tile25" data-animation="idle"></div>
+        </div>
+        <div class="row" id="row3">
+            <div class="tile" id="tile31" data-animation="idle"></div>
+            <div class="tile" id="tile32" data-animation="idle"></div>
+            <div class="tile" id="tile33" data-animation="idle"></div>
+            <div class="tile" id="tile34" data-animation="idle"></div>
+            <div class="tile" id="tile35" data-animation="idle"></div>
+        </div>
+        <div class="row" id="row4">
+            <div class="tile" id="tile41" data-animation="idle"></div>
+            <div class="tile" id="tile42" data-animation="idle"></div>
+            <div class="tile" id="tile43" data-animation="idle"></div>
+            <div class="tile" id="tile44" data-animation="idle"></div>
+            <div class="tile" id="tile45" data-animation="idle"></div>
+        </div>
+        <div class="row" id="row5">
+            <div class="tile" id="tile51" data-animation="idle"></div>
+            <div class="tile" id="tile52" data-animation="idle"></div>
+            <div class="tile" id="tile53" data-animation="idle"></div>
+            <div class="tile" id="tile54" data-animation="idle"></div>
+            <div class="tile" id="tile55" data-animation="idle"></div>
+        </div>
+        <div class="row" id="row6">
+            <div class="tile" id="tile61" data-animation="idle"></div>
+            <div class="tile" id="tile62" data-animation="idle"></div>
+            <div class="tile" id="tile63" data-animation="idle"></div>
+            <div class="tile" id="tile64" data-animation="idle"></div>
+            <div class="tile" id="tile65" data-animation="idle"></div>
+        </div>
+    </div>
+    <style>
+        #keyboard {
+            display: flexbox;
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+        #keyboard div {
+            margin: 10px 0;
+        }
+
+        #space {
+            width: 184px;
+        }
+
+        #keyboard label {
+            margin-top: 20px;
+            font-family: serif;
+            text-decoration: underline;
+        }
+
+        #keyboard input {
+            border: none;
+        }
+
+        #keyboard input[type="text"] {
+            margin-top: 20px;
+            border: solid #666;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+
+        #keyboard input[type="button"] {
+            width: 40px;
+            height: 50px;
+            background-color: rgb(209, 209, 209);
+            font-size: 17;
+            font-family: arial;
+        }
+
+        #keyboard input[type="reset"] {
+            width: 80px;
+            height: 30px;
+            font-size: 17;
+            font-family: david;
+            color: aliceblue;
+            background-color: #666;
+        }
+
+        #keyboard input[type="submit"] {
+            width: 80px;
+            height: 30px;
+            font-size: 17;
+            font-family: david;
+            color: aliceblue;
+            background-color: rgb(98, 159, 91);
+        }
+
+        @media (min-width:200px) and (max-width:369px) {
+            #keyboard {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            #keyboard div {
+                margin: 5px 0;
+            }
+
+            #keyboard input[type="button"] {
+                width: 20px;
+                height: 40px;
+                margin: 1px;
+            }
+        }
+
+        @media (min-width:370px) and (max-width:400px) {
+
+            #keyboard div {
+                margin: 5px 0;
+            }
+
+            #keyboard input[type="button"] {
+                width: 25px;
+                height: 45px;
+                margin: 2px;
+            }
+        }
+
+        @media (min-width:401px) and (max-width:600px) {
+            #keyboard div {
+                margin: 5px 0;
+            }
+
+            #keyboard input[type="button"] {
+                width: 29px;
+                height: 45px;
+                margin: 2px;
+            }
+        }
+    </style>
+    <script>
+    </script>
+    <div id="keyboard">
+        <div>
+            <input type="button" onclick="clickLetter(this.value)" value="ק" id="ק">
+            <input type="button" onclick="clickLetter(this.value)" value="ר" id="ר">
+            <input type="button" onclick="clickLetter(this.value)" value="א" id="א">
+            <input type="button" onclick="clickLetter(this.value)" value="ט" id="ט">
+            <input type="button" onclick="clickLetter(this.value)" value="ו" id="ו">
+            <input type="button" onclick="clickLetter(this.value)" value="ן" id="ן">
+            <input type="button" onclick="clickLetter(this.value)" value="ם" id="ם">
+            <input type="button" onclick="clickLetter(this.value)" value="פ" id="פ">
+        </div>
+        <div>
+            <input type="button" onclick="clickLetter(this.value)" value="ש" id="ש">
+            <input type="button" onclick="clickLetter(this.value)" value="ד" id="ד">
+            <input type="button" onclick="clickLetter(this.value)" value="ג" id="ג">
+            <input type="button" onclick="clickLetter(this.value)" value="כ" id="כ">
+            <input type="button" onclick="clickLetter(this.value)" value="ע" id="ע">
+            <input type="button" onclick="clickLetter(this.value)" value="י" id="י">
+            <input type="button" onclick="clickLetter(this.value)" value="ח" id="ח">
+            <input type="button" onclick="clickLetter(this.value)" value="ל" id="ל">
+            <input type="button" onclick="clickLetter(this.value)" value="ך" id="ך">
+            <input type="button" onclick="clickLetter(this.value)" value="ף" id="ף">
+        </div>
+        <div>
+            <input type="button" onclick="clickLetter(this.value)" value="ז" id="ז">
+            <input type="button" onclick="clickLetter(this.value)" value="ס" id="ס">
+            <input type="button" onclick="clickLetter(this.value)" value="ב" id="ב">
+            <input type="button" onclick="clickLetter(this.value)" value="ה" id="ה">
+            <input type="button" onclick="clickLetter(this.value)" value="נ" id="נ">
+            <input type="button" onclick="clickLetter(this.value)" value="מ" id="מ">
+            <input type="button" onclick="clickLetter(this.value)" value="צ" id="צ">
+            <input type="button" onclick="clickLetter(this.value)" value="ת" id="ת">
+            <input type="button" onclick="clickLetter(this.value)" value="ץ" id="ץ">
+        </div>
+        <div>
+            <input id="send" type="submit" value="שליחה" onclick="sendWord()">
+            <input id="clear" type="reset" value="מחיקה" onclick="eraseLetter()">
+        </div>
+        <div>
+            <!--<label></label><input id="text" type="text">-->
+        </div>
+
+    </div><!-- end #keyboard -->
+    <script src="main.js"></script>
+
+</body>
+
+</html>
