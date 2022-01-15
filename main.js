@@ -20,7 +20,7 @@ let pickedWord = pickWord();
 
 
 function pickWord() {
-    const startDate=new Date(2022,1,12);
+    const startDate=new Date(2022,1,11);
     const today = new Date();
     let pickIndex = today.getDate()-startDate.getDate()+28*((today.getMonth()+1)-startDate.getMonth())+(365*(today.getFullYear()-startDate.getFullYear()));
     numOfWordale=pickIndex;
