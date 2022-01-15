@@ -35,11 +35,11 @@ function storeUserWord(userWord) {
 };
 
 function clickLetter(value) {
-
     currentRow = document.getElementById(`row${rowCount}`)
     for (let i = 1; i <= 5; i++) {
         let tile = `tile${rowCount}${i}`;
         if (document.getElementById(`${tile}`).innerHTML == '') {
+            value=changeToFinal(value);
             currentWord += value;//add letter to currentWord
             document.getElementById(tile).setAttribute('data-animation', 'pop');
             document.getElementById(tile).style.border = "solid rgb(34, 34, 34)";
@@ -47,6 +47,17 @@ function clickLetter(value) {
             break;
         }
     }
+}
+function changeToFinal(value){
+    if (currentWord.length===4){
+        if (value==='פ') {value='ף';};
+        if (value==='נ') {value='ן';};
+        if (value==='מ') {value='ם';};
+        if (value==='כ') {value='ך';};
+        if (value==='צ') {value='ץ';};
+
+    }
+    return value;
 }
 function sendWord() {
     if (win === false) {
