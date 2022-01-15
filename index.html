@@ -123,6 +123,25 @@
                 opacity: 1;
             }
         }
+
+        .tile[data-animation='flip-in'] {
+            animation-name: FlipIn;
+            animation-duration: 500ms;
+            animation-timing-function: ease-in;
+        }
+
+        @keyframes FlipIn {
+            0% {
+                transform: rotateX(0);
+            }
+            50% {
+                transform: rotateX(-90deg);
+            }
+            100% {
+                transform: rotateX(0);
+            }
+        }
+
         @media (min-width:200px) and (max-width:280px) {
 
 
