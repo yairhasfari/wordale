@@ -70,6 +70,7 @@ function sendWord() {
                 if (wordCount < 7) {
                     wordCount++;
                 }
+                document.getElementById('demo').innerHTML=currentWord;
                 compareWords();
                 rowCount++;
                 currentWord = '';
@@ -176,22 +177,21 @@ function compareWords() {
     for (i = 0; i < greyIndices.length; i++) {
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.backgroundColor = "rgb(109, 113 ,115)";//gray
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.border = "solid rgb(109, 113 ,115)";//gray border
-        document.getElementById(currentWord[greyIndices[i]]).style.backgroundColor = "rgb(109, 113 ,115)";
-        document.getElementById(currentWord[greyIndices[i]]).style.color = "white";
+        paintFinalLetter(currentWord[greyIndices[i]],"rgb(109, 113 ,115)");
         answer.splice(greyIndices[i], 0, '⬜');
 
     }
     for (i = 0; i < yellowIndices.length; i++) {
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.backgroundColor = "rgb(194, 170, 82)";//yellow
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.border = "solid rgb(194, 170, 82)";//yellow border
-        document.getElementById(currentWord[yellowIndices[i]]).style.backgroundColor = "rgb(194, 170, 82)";
+        paintFinalLetter(currentWord[yellowIndices[i]],"rgb(194, 170, 82)");
         answer.splice(yellowIndices[i], 0, '🟨');
 
     }
     for (i = 0; i < greenIndices.length; i++) {
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.backgroundColor = "rgb(98, 159, 91)";//green
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.border = "solid rgb(98, 159, 91)";//green border
-        document.getElementById(currentWord[greenIndices[i]]).style.backgroundColor = "rgb(98, 159, 91)";
+        paintFinalLetter(currentWord[greenIndices[i]],"rgb(98, 159, 91)");
         answer.splice(greenIndices[i], 0, '🟩');
 
     }
@@ -234,6 +234,17 @@ function checkSpell(word) {
     return wordExists;
 
 };
+function paintFinalLetter(letter,color){
+    if (letter==='ן') letter ='נ';
+    if (letter==='ם') letter ='מ';
+    if (letter==='ץ') letter ='צ';
+    if (letter==='ף') letter ='פ';
+    if (letter==='ך') letter ='כ';
+    document.getElementById(letter).style.backgroundColor = color;
+    document.getElementById(letter).style.color = "white";
+
+
+}
 function shareResults() {
     let shareResult = `וורדלה # ${numOfWordale}` + "\n";
     shareResult += `נסיון ${wordCount} מתוך 6` + "\n";
