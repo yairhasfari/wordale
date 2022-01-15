@@ -215,7 +215,7 @@ function compareWords() {
     }
     //if ended and lost:
     if (wordCount === 6 && greenIndices.length != 5) {
-        let message = `${pickedWord} המילה היא `;
+        let message = `המילה היא ${pickedWord} `;
         openNotificationLong(message, false);
     }
 }
