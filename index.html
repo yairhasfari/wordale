@@ -5,7 +5,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HYHMGH006"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
+        gtag('config', 'G-3HYHMGH006');
+    </script>
 </head>
 
 <body>
@@ -14,11 +22,11 @@
     <div id="notify">
     </div>
     <div id="notify2">
-            <input type="button" id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
+        <input type="button" id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
     </div>
 
     <style>
-#shareButton{
+        #shareButton {
 
             font-family: 'Secular One';
             font-size: 1.2rem;
@@ -32,10 +40,11 @@
             overflow: hidden;
             box-sizing: border-box;
             transition: height .2s;
-            border-color:transparent;
+            border-color: transparent;
             border-radius: 1rem;
             visibility: hidden;
-}
+        }
+
         #notify {
             display: flex;
             font-family: 'Secular One';
@@ -134,9 +143,11 @@
             0% {
                 transform: rotateX(0);
             }
+
             50% {
                 transform: rotateX(-90deg);
             }
+
             100% {
                 transform: rotateX(0);
             }
@@ -145,12 +156,12 @@
         @media (min-width:200px) and (max-width:280px) {
 
 
-.tile {
-    margin: 2px;
-    width: 40px;
-            height: 40px;
-}
-}
+            .tile {
+                margin: 2px;
+                width: 40px;
+                height: 40px;
+            }
+        }
 
         @media (min-width:281px) and (max-width:400px) {
 
@@ -260,7 +271,7 @@
             width: 40px;
             height: 50px;
             background-color: rgb(209, 209, 209);
-            color:black;
+            color: black;
             font-family: 'Secular One';
             text-align: center;
             font-size: 17;
