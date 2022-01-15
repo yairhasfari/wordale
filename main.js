@@ -22,7 +22,7 @@ let pickedWord = pickWord();
 function pickWord() {
     const startDate=new Date(2022,1,12);
     const today = new Date();
-    let pickIndex = today.getDate()-startDate.getDate();
+    let pickIndex = today.getDate()-startDate.getDate()+28*((today.getMonth()+1)-startDate.getMonth())+(365*(today.getFullYear()-startDate.getFullYear()));
     numOfWordale=pickIndex;
     console.log(listOfWords.length);
     return listOfWords[pickIndex];
@@ -70,7 +70,6 @@ function sendWord() {
                 if (wordCount < 7) {
                     wordCount++;
                 }
-                document.getElementById('demo').innerHTML=currentWord;
                 compareWords();
                 rowCount++;
                 currentWord = '';
@@ -128,7 +127,6 @@ function eraseLetter() {
     }
 
 }
-
 function compareWords() {
     let answer = [];
     let newWord = '';
@@ -175,6 +173,8 @@ function compareWords() {
     }
 
     for (i = 0; i < greyIndices.length; i++) {
+        document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
+
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.backgroundColor = "rgb(109, 113 ,115)";//gray
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.border = "solid rgb(109, 113 ,115)";//gray border
         paintFinalLetter(currentWord[greyIndices[i]],"rgb(109, 113 ,115)");
@@ -182,6 +182,7 @@ function compareWords() {
 
     }
     for (i = 0; i < yellowIndices.length; i++) {
+        document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.backgroundColor = "rgb(194, 170, 82)";//yellow
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.border = "solid rgb(194, 170, 82)";//yellow border
         paintFinalLetter(currentWord[yellowIndices[i]],"rgb(194, 170, 82)");
@@ -189,6 +190,7 @@ function compareWords() {
 
     }
     for (i = 0; i < greenIndices.length; i++) {
+        document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.backgroundColor = "rgb(98, 159, 91)";//green
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.border = "solid rgb(98, 159, 91)";//green border
         paintFinalLetter(currentWord[greenIndices[i]],"rgb(98, 159, 91)");
@@ -294,3 +296,4 @@ var file = fs.createWriteStream('randoms.txt');
     file.on('error', function(err) { Console.log(err) });
     arr.forEach(value => file.write(`${value} `));
     file.end();*/
+
