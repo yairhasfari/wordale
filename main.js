@@ -20,12 +20,15 @@ let pickedWord = pickWord();
 
 
 function pickWord() {
-    const startDate=new Date(2022,1,11);
+    const startDate=new Date(2022,0,11);
     const today = new Date();
-    let pickIndex = today.getDate()-startDate.getDate()+28*((today.getMonth()+1)-startDate.getMonth())+(365*(today.getFullYear()-startDate.getFullYear()));
-    numOfWordale=pickIndex;
+    var differenceInTime = today.getTime() - startDate.getTime();
+  
+// To calculate the no. of days between two dates
+var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    numOfWordale=differenceInDays;
     console.log(listOfWords.length);
-    return listOfWords[pickIndex];
+    return listOfWords[differenceInDays];
 }
 function addUserWord() {
     let userWord = document.getElementById("word").value;
@@ -297,3 +300,5 @@ var file = fs.createWriteStream('randoms.txt');
     arr.forEach(value => file.write(`${value} `));
     file.end();*/
 
+console.log(pickWord());
+    // To calculate the time difference of two dates
