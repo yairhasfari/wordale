@@ -27,7 +27,6 @@ function pickWord() {
 // To calculate the no. of days between two dates
 var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     numOfWordale=differenceInDays;
-    console.log(listOfWords.length);
     return listOfWords[differenceInDays];
 }
 function addUserWord() {
@@ -253,7 +252,7 @@ function paintFinalLetter(letter,color){
 function shareResults() {
     let shareResult = `וורדל\'ה # ${numOfWordale}` + "\n";
     shareResult += `נסיון ${wordCount} מתוך 6` + "\n";
-    console.log(answers);
+    
     for (i = 0; i < answers.length; i++) {
         let tempAnswer = answers[i].toString();
         const result = tempAnswer.replaceAll(",", "");
@@ -265,7 +264,13 @@ function shareResults() {
     document.getElementById('notify2').innerHTML = message;
 
 }
-
+function openInstructions(){
+    if (document.getElementById('instructions').style.visibility==="hidden"){
+    document.getElementById('instructions').style.visibility="visible";}
+    else {
+        document.getElementById('instructions').style.visibility="hidden";
+    }
+}
 /*
 function getWordsToArray(){
     hebWordsArray=[];
@@ -300,5 +305,3 @@ var file = fs.createWriteStream('randoms.txt');
     arr.forEach(value => file.write(`${value} `));
     file.end();*/
 
-console.log(pickWord());
-    // To calculate the time difference of two dates

@@ -14,17 +14,49 @@
 
         gtag('config', 'G-3HYHMGH006');
     </script>
+    <div id="topBar">
+        <style>
+            #topBar {
+                margin: auto;
+                display: flex;
+                justify-content: space-evenly;
+                width: 320px;
+                height: 50px;
+                font-family: 'Secular One';
+                overflow: hidden;
+
+            }
+
+            #topBar div {
+                text-align: center;
+                align-self: center;
+                /* justify-self: center; */
+
+            }
+
+            #topBar button {
+                border: none;
+                background-color: transparent;
+
+            }
+        </style>
+        <div><button class="rules"><img src="question-mark.svg" style="width:17px"
+                    onclick="openInstructions()"></button></div>
+        <div>
+            <h1 class="title">וורדל׳ה</h1>
+        </div>
+        <div>&nbsp; </div>
+    </div>
 </head>
 
 <body>
     <h3 id="demo"></h3>
-    <h1 style="text-align: center; font-family:'Secular One';">וורדל׳ה</h1>
+
     <div id="notify">
     </div>
     <div id="notify2">
-        <input type="button" id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
+        <button id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
     </div>
-
     <style>
         #shareButton {
 
@@ -95,11 +127,12 @@
             font-family: 'Secular One';
             font-size: 2em;
 
+
         }
 
         .row {
             display: flex;
-            flex-wrap: wrap;
+            /* flex-wrap: wrap; */
             flex-direction: row-reverse;
             justify-content: center;
         }
@@ -109,8 +142,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border: solid rgb(212, 212, 212);
             border-radius: 5px;
             vertical-align: top;
@@ -153,6 +186,36 @@
             }
         }
 
+        #instructions {
+            display: flexbox;
+            left:50%;
+            margin-left:-125px;
+            width: 250px;
+            
+            background-color: rgb(243, 243, 243);
+            box-shadow:10px 10px 10px -5px rgb(68, 68, 68);
+            position: absolute;
+            z-index: 10;
+            text-align: right;
+            line-height:35px;
+            padding:20px;
+            font-family: 'Secular One';
+            font-size:15px;
+            
+        }
+
+        .rulesTitle{
+            font-size:30px;
+        }
+        .lineBar{
+            width:250px;
+            height:2px;
+            background-color: rgb(151, 151, 151);
+            
+            /* margin-left:-75px; */
+            
+        }
+        /* 
         @media (min-width:200px) and (max-width:280px) {
 
 
@@ -186,8 +249,30 @@
             .tile {
                 margin: 7px;
             }
-        }
+        } */
     </style>
+    <div id="instructions" style="visibility:hidden">
+        <label class="rulesTitle">
+        החוקים 
+        </label>
+        <br>
+        .יש 6 נסיונות לנחש מילה
+        <br>
+        .כל ניחוש חייב להיות בן 5 אותיות
+        <br>
+        .כל ניחוש חייב להיות מילה אמיתית
+        <br>
+        <div class="lineBar"></div>
+        :אות נצבעת ירוק אם פגעה במקום הנכון
+        <br>
+        <img src="green.png" style="width:200px; margin-bottom:10px;">
+        <br>
+        <div class="lineBar"></div>
+        אות נצבעת צהוב אם היא קיימת במילה 
+        <br>
+        :אך במקום הלא נכון בניחוש
+        <img src="yellow.png" style="width:200px; margin-bottom:10px;">
+    </div>
     <div id="container">
         <div class="row" id="row1">
             <div class="tile" id="tile11" data-animation="idle"></div>
@@ -235,7 +320,7 @@
     <style>
         #keyboard {
             display: flexbox;
-            padding: 10px 15px;
+            padding-top: 10px;
 
             border-radius: 10px;
 
@@ -243,42 +328,48 @@
         }
 
         #keyboard div {
-            margin: 10px 0;
+            /* margin: 10px 0; */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #space {
-            width: 184px;
-        }
 
-        #keyboard label {
-            margin-top: 20px;
-            font-family: serif;
-            text-decoration: underline;
-        }
-
-        #keyboard input {
-            border: none;
-        }
-
-        #keyboard input[type="text"] {
-            margin-top: 20px;
-            border: solid #666;
-            border-radius: 4px;
-            box-shadow: none;
-        }
-
-        #keyboard input[type="button"] {
+        #keyboard button {
             width: 40px;
             height: 50px;
-            background-color: rgb(209, 209, 209);
-            color: black;
             font-family: 'Secular One';
             text-align: center;
             font-size: 17;
-            font-family: arial;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+
         }
 
-        #keyboard input[type="reset"] {
+        #keyboard .letter {
+            background-color: rgb(209, 209, 209);
+            color: black;
+        }
+
+        #keyboard .send {
+            color: rgb(235, 235, 235);
+            width: 70px;
+            background-color: rgb(110, 110, 110);
+        }
+
+        /* #keyboard .eraseButton{
+            width: 40px;
+            height: 50px;
+            font-family: 'Secular One';
+            text-align: center;
+            font-size: 17;
+            background-color: rgb(209, 209, 209);
+            color: black;
+        } */
+
+        /* #keyboard input[type="reset"] {
             width: 80px;
             height: 30px;
             font-size: 17;
@@ -294,9 +385,9 @@
             font-family: 'Secular One';
             color: aliceblue;
             background-color: rgb(98, 159, 91);
-        }
+        } */
 
-        @media (min-width:200px) and (max-width:369px) {
+        /* @media (min-width:200px) and (max-width:369px) {
             #keyboard {
                 padding-left: 0;
                 padding-right: 0;
@@ -336,48 +427,52 @@
                 height: 45px;
                 margin: 2px;
             }
-        }
+        } */
     </style>
     <script>
     </script>
     <div id="keyboard">
         <div>
-            <input type="button" onclick="clickLetter(this.value)" value="ק" id="ק">
-            <input type="button" onclick="clickLetter(this.value)" value="ר" id="ר">
-            <input type="button" onclick="clickLetter(this.value)" value="א" id="א">
-            <input type="button" onclick="clickLetter(this.value)" value="ט" id="ט">
-            <input type="button" onclick="clickLetter(this.value)" value="ו" id="ו">
-            <!-- <input type="button" onclick="clickLetter(this.value)" value="ן" id="ן"> -->
-            <!-- <input type="button" onclick="clickLetter(this.value)" value="ם" id="ם"> -->
-            <input type="button" onclick="clickLetter(this.value)" value="פ" id="פ">
+
+            <button class="letter" onclick="clickLetter(this.value)" value="ק" id="ק">ק</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ר" id="ר">ר</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="א" id="א">א</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
+            <!-- <button onclick="clickLetter(this.value)" value="ן" id="ן"> -->
+            <!-- <button onclick="clickLetter(this.value)" value="ם" id="ם"> -->
+            <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
+            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg"></button>
         </div>
         <div>
-            <input type="button" onclick="clickLetter(this.value)" value="ש" id="ש">
-            <input type="button" onclick="clickLetter(this.value)" value="ד" id="ד">
-            <input type="button" onclick="clickLetter(this.value)" value="ג" id="ג">
-            <input type="button" onclick="clickLetter(this.value)" value="כ" id="כ">
-            <input type="button" onclick="clickLetter(this.value)" value="ע" id="ע">
-            <input type="button" onclick="clickLetter(this.value)" value="י" id="י">
-            <input type="button" onclick="clickLetter(this.value)" value="ח" id="ח">
-            <input type="button" onclick="clickLetter(this.value)" value="ל" id="ל">
-            <!-- <input type="button" onclick="clickLetter(this.value)" value="ך" id="ך"> -->
-            <!-- <input type="button" onclick="clickLetter(this.value)" value="ף" id="ף"> -->
+            <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ד" id="ד">ד</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ג" id="ג">ג</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="כ" id="כ">כ</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ע" id="ע">ע</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="י" id="י">י</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ח" id="ח">ח</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ל" id="ל">ל</button>
+            <!-- <button onclick="clickLetter(this.value)" value="ך" id="ך"> -->
+            <!-- <button onclick="clickLetter(this.value)" value="ף" id="ף"> -->
         </div>
         <div>
-            <input type="button" onclick="clickLetter(this.value)" value="ז" id="ז">
-            <input type="button" onclick="clickLetter(this.value)" value="ס" id="ס">
-            <input type="button" onclick="clickLetter(this.value)" value="ב" id="ב">
-            <input type="button" onclick="clickLetter(this.value)" value="ה" id="ה">
-            <input type="button" onclick="clickLetter(this.value)" value="נ" id="נ">
-            <input type="button" onclick="clickLetter(this.value)" value="מ" id="מ">
-            <input type="button" onclick="clickLetter(this.value)" value="צ" id="צ">
-            <input type="button" onclick="clickLetter(this.value)" value="ת" id="ת">
-            <!-- <input type="button" onclick="clickLetter(this.value)" value="ץ" id="ץ"> -->
+            <button class="letter" onclick="clickLetter(this.value)" value="ז" id="ז">ז</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ס" id="ס">ס</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ב" id="ב">ב</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ה" id="ה">ה</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="נ" id="נ">נ</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="מ" id="מ">מ</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="צ" id="צ">צ</button>
+            <button class="letter" onclick="clickLetter(this.value)" value="ת" id="ת">ת</button>
+            <!-- <button onclick="clickLetter(this.value)" value="ץ" id="ץ"> -->
         </div>
-        <div>
+        <div><button class="send" id="send" value="שליחה" onclick="sendWord()">שליחה</button>
+        </div>
+        <!-- <div>
             <input id="send" type="submit" value="שליחה" onclick="sendWord()">
             <input id="clear" type="reset" value="מחיקה" onclick="eraseLetter()">
-        </div>
+        </div> -->
         <div>
             <!--<label></label><input id="text" type="text">-->
         </div>
