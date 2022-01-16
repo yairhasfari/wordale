@@ -333,10 +333,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            
         }
 
 
         #keyboard button {
+            touch-action: manipulation;
             width: 40px;
             height: 50px;
             font-family: 'Secular One';
@@ -344,7 +346,7 @@
             font-size: 17;
             border: none;
             border-radius: 5px;
-            margin: 5px;
+            margin: 2px;
 
         }
 
@@ -442,7 +444,7 @@
             <!-- <button onclick="clickLetter(this.value)" value="ן" id="ן"> -->
             <!-- <button onclick="clickLetter(this.value)" value="ם" id="ם"> -->
             <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
-            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg"></button>
+            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg" style="width:20px;"></button>
         </div>
         <div>
             <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
