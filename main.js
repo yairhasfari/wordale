@@ -12,15 +12,17 @@ let rowCount = 1;
 //compare this to know if word was sent
 let wordCount = 0;
 let currentWord = '';
-let answers = [];
+let answersColors = [];
+let answersLetters = [];
 let numOfWordale=0;
-
+const startDate=new Date(2022,0,11);
+let today=new Date();
 let listOfWords=["שגשוג","מפלצת","חיקוי","השלמה","טמטום","הקרבה","טיעון", "מדינה", "קרטיב", "עבודה", "ליכוד", "ספורט", "מגניב","גפרור","אכלוס","דוגמן","הוסטל","יומרה","מזעזע","צליבה","קפאין","שרטוט","סטירה","הפנוט","פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון","שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת","הטמעה","תכסיס","תתרכך","רמקול","שניצל","מנסרה","רטבים","נזהרת","חמדתי","להבין","גישור","תינוק","מצחיק","כיפור","פספוס","קזינו","צדדים","חיטוי","הרגעה","נסיעה","ספרדי","עניבה","סטייק","מרקדת","מפחיד","כוורת","גידול"];
 let pickedWord = pickWord();
 
+
 function pickWord() {
-    const startDate=new Date(2022,0,11);
-    const today = new Date();
+    //today = new Date();
     var differenceInTime = today.getTime() - startDate.getTime();
   
 // To calculate the no. of days between two dates
@@ -64,6 +66,7 @@ function changeToFinal(value){
     return value;
 }
 function sendWord() {
+    
     if (win === false) {
         let x = checkSpell(currentWord);
         if (currentWord.length === 5) {
@@ -73,6 +76,8 @@ function sendWord() {
                 }
                 compareWords();
                 rowCount++;
+                answersLetters.push(currentWord);
+                saveUserData();
                 currentWord = '';
             } else {
                 openNotification('המילה לא קיימת');
@@ -198,9 +203,10 @@ function compareWords() {
         answer.splice(greenIndices[i], 0, '🟩');
 
     }
-
+    
     answer = answer.reverse();
-    answers.push(answer);
+    console.log(typeof answersColors)
+    answersColors.push(answer);
 
 
     // color text white
@@ -252,8 +258,8 @@ function shareResults() {
     let shareResult = `וורדל\'ה # ${numOfWordale}` + "\n";
     shareResult += `נסיון ${wordCount} מתוך 6` + "\n";
     
-    for (i = 0; i < answers.length; i++) {
-        let tempAnswer = answers[i].toString();
+    for (i = 0; i < answersColors.length; i++) {
+        let tempAnswer = answersColors[i].toString();
         const result = tempAnswer.replaceAll(",", "");
         shareResult = shareResult + result + "\n";
 
@@ -272,6 +278,55 @@ function openInstructions(){
         document.getElementById('instructions').style.visibility="hidden";
     }
 }
+function saveUserData(){
+    localStorage.setItem('userDate',today);
+    localStorage.setItem('answersColors',answersColors);
+    localStorage.setItem('answersLetters',answersLetters)
+}
+function loadUserData(){
+    let savedDateString=localStorage.getItem('userDate');
+    let savedDate=new Date(savedDateString);
+    let todayNoHours=today.setHours(0,0,0,0);
+    let savedDateCompare=savedDate.setHours(0,0,0,0)
+    console.log(todayNoHours===savedDateCompare);
+    console.log(today.getDate());
+    if (todayNoHours===savedDateCompare){
+        
+        answersLetters = localStorage.getItem('answersLetters').split(",");
+    }
+    for (k=0;k<answersLetters.length;k++){
+        console.log('i'+k);
+        for (m=0;m<answersLetters[k].length;m++){
+            document.getElementById(`tile${k+1}${m+1}`).innerHTML=answersLetters[k][m];
+        }
+
+        
+        currentRow=k+1;
+        currentWord=answersLetters[k];
+        wordCount=k+1;
+        rowCount=rowCount+1;
+        console.log('i'+k);
+        compareWords();
+        currentWord='';
+        console.log(rowCount);
+        console.log(wordCount)
+
+    }
+            // if(answersColors[i]==="⬜"){
+            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(109, 113 ,115)";//gray
+            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(109, 113 ,115)";
+            // } else if (answersColors[i]==="🟨"){
+            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(194, 170, 82)";//gray
+            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(194, 170, 82)";
+            // }
+            // else if(answersColors[i]==="🟩"){
+            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(98, 159, 91)"//gray
+            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(98, 159, 91)"
+            // }
+
+   
+}
+loadUserData();
 /*
 function getWordsToArray(){
     hebWordsArray=[];
