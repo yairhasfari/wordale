@@ -259,9 +259,11 @@ function shareResults() {
         shareResult = shareResult + result + "\n";
 
     }
+    shareResult=shareResult+"\n" +"וורדל בעברית:" +"\n"+"https://yairhasfari.github.io/wordale";
     navigator.clipboard.writeText(shareResult);
-    let message = 'תוצאות הועתקו ללוח';
-    document.getElementById('notify2').innerHTML = message;
+   
+    let shareButton="<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
+    document.getElementById('notify2').innerHTML = shareButton;
 
 }
 function openInstructions(){
