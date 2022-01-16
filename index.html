@@ -212,47 +212,10 @@
             height:2px;
             background-color: rgb(151, 151, 151);
             
-            /* margin-left:-75px; */
-            
         }
         a{
             color:rgb(0, 112, 112);
         }
-        /* 
-        @media (min-width:200px) and (max-width:280px) {
-
-
-            .tile {
-                margin: 2px;
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        @media (min-width:281px) and (max-width:400px) {
-
-
-            .tile {
-                margin: 2px;
-            }
-        }
-
-        @media (min-height:750px) and (max-width:900px) {
-
-
-            #container {
-                padding-top: 10%;
-                padding-bottom: 20%;
-            }
-        }
-
-        @media (min-width:401px) and (max-width:600px) {
-
-
-            .tile {
-                margin: 7px;
-            }
-        } */
     </style>
     <div id="instructions" style="visibility:hidden">
         <label class="rulesTitle">
@@ -338,7 +301,6 @@
         }
 
         #keyboard div {
-            /* margin: 10px 0; */
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -371,75 +333,6 @@
             background-color: rgb(110, 110, 110);
         }
 
-        /* #keyboard .eraseButton{
-            width: 40px;
-            height: 50px;
-            font-family: 'Secular One';
-            text-align: center;
-            font-size: 17;
-            background-color: rgb(209, 209, 209);
-            color: black;
-        } */
-
-        /* #keyboard input[type="reset"] {
-            width: 80px;
-            height: 30px;
-            font-size: 17;
-            font-family: 'Secular One';
-            color: aliceblue;
-            background-color: #666;
-        }
-
-        #keyboard input[type="submit"] {
-            width: 80px;
-            height: 30px;
-            font-size: 17;
-            font-family: 'Secular One';
-            color: aliceblue;
-            background-color: rgb(98, 159, 91);
-        } */
-
-        /* @media (min-width:200px) and (max-width:369px) {
-            #keyboard {
-                padding-left: 0;
-                padding-right: 0;
-            }
-
-            #keyboard div {
-                margin: 5px 0;
-            }
-
-            #keyboard input[type="button"] {
-                width: 30px;
-                height: 40px;
-                margin: 1px;
-            }
-        }
-
-        @media (min-width:370px) and (max-width:400px) {
-
-            #keyboard div {
-                margin: 5px 0;
-            }
-
-            #keyboard input[type="button"] {
-                width: 28px;
-                height: 45px;
-                margin: 2px;
-            }
-        }
-
-        @media (min-width:401px) and (max-width:600px) {
-            #keyboard div {
-                margin: 5px 0;
-            }
-
-            #keyboard input[type="button"] {
-                width: 29px;
-                height: 45px;
-                margin: 2px;
-            }
-        } */
     </style>
     <script>
     </script>
@@ -451,8 +344,6 @@
             <button class="letter" onclick="clickLetter(this.value)" value="א" id="א">א</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
-            <!-- <button onclick="clickLetter(this.value)" value="ן" id="ן"> -->
-            <!-- <button onclick="clickLetter(this.value)" value="ם" id="ם"> -->
             <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
             <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg" style="width:20px;"></button>
         </div>
@@ -465,8 +356,6 @@
             <button class="letter" onclick="clickLetter(this.value)" value="י" id="י">י</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ח" id="ח">ח</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ל" id="ל">ל</button>
-            <!-- <button onclick="clickLetter(this.value)" value="ך" id="ך"> -->
-            <!-- <button onclick="clickLetter(this.value)" value="ף" id="ף"> -->
         </div>
         <div>
             <button class="letter" onclick="clickLetter(this.value)" value="ז" id="ז">ז</button>
@@ -477,18 +366,11 @@
             <button class="letter" onclick="clickLetter(this.value)" value="מ" id="מ">מ</button>
             <button class="letter" onclick="clickLetter(this.value)" value="צ" id="צ">צ</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ת" id="ת">ת</button>
-            <!-- <button onclick="clickLetter(this.value)" value="ץ" id="ץ"> -->
         </div>
         <div><button class="send" id="send" value="שליחה" onclick="sendWord()">שליחה</button>
         </div>
-        <!-- <div>
-            <input id="send" type="submit" value="שליחה" onclick="sendWord()">
-            <input id="clear" type="reset" value="מחיקה" onclick="eraseLetter()">
-        </div> -->
         <div>
-            <!--<label></label><input id="text" type="text">-->
         </div>
-
     </div><!-- end #keyboard -->
     <script src="main.js"></script>
 

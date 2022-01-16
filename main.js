@@ -14,20 +14,20 @@ let wordCount = 0;
 let currentWord = '';
 let answersColors = [];
 let answersLetters = [];
-let numOfWordale=0;
-const startDate=new Date(2022,0,11);
-let today=new Date();
-let listOfWords=["שגשוג","מפלצת","חיקוי","השלמה","טמטום","הקרבה","טיעון", "מדינה", "קרטיב", "עבודה", "ליכוד", "ספורט", "מגניב","גפרור","אכלוס","דוגמן","הוסטל","יומרה","מזעזע","צליבה","קפאין","שרטוט","סטירה","הפנוט","פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון","שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת","הטמעה","תכסיס","תתרכך","רמקול","שניצל","מנסרה","רטבים","נזהרת","חמדתי","להבין","גישור","תינוק","מצחיק","כיפור","פספוס","קזינו","צדדים","חיטוי","הרגעה","נסיעה","ספרדי","עניבה","סטייק","מרקדת","מפחיד","כוורת","גידול"];
+let numOfWordale = 0;
+const startDate = new Date(2022, 0, 11);
+let today = new Date();
+let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "מדינה", "קרטיב", "עבודה", "ליכוד", "ספורט", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
 let pickedWord = pickWord();
 
 
 function pickWord() {
     //today = new Date();
     var differenceInTime = today.getTime() - startDate.getTime();
-  
-// To calculate the no. of days between two dates
-var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
-    numOfWordale=differenceInDays;
+
+    // To calculate the no. of days between two dates
+    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    numOfWordale = differenceInDays;
     return listOfWords[differenceInDays];
 }
 function addUserWord() {
@@ -45,7 +45,7 @@ function clickLetter(value) {
     for (let i = 1; i <= 5; i++) {
         let tile = `tile${rowCount}${i}`;
         if (document.getElementById(`${tile}`).innerHTML == '') {
-            value=changeToFinal(value);
+            value = changeToFinal(value);
             currentWord += value;//add letter to currentWord
             document.getElementById(tile).setAttribute('data-animation', 'pop');
             document.getElementById(tile).style.border = "solid rgb(34, 34, 34)";
@@ -54,19 +54,19 @@ function clickLetter(value) {
         }
     }
 }
-function changeToFinal(value){
-    if (currentWord.length===4){
-        if (value==='פ') {value='ף';};
-        if (value==='נ') {value='ן';};
-        if (value==='מ') {value='ם';};
-        if (value==='כ') {value='ך';};
-        if (value==='צ') {value='ץ';};
+function changeToFinal(value) {
+    if (currentWord.length === 4) {
+        if (value === 'פ') { value = 'ף'; };
+        if (value === 'נ') { value = 'ן'; };
+        if (value === 'מ') { value = 'ם'; };
+        if (value === 'כ') { value = 'ך'; };
+        if (value === 'צ') { value = 'ץ'; };
 
     }
     return value;
 }
 function sendWord() {
-    
+
     if (win === false) {
         let x = checkSpell(currentWord);
         if (currentWord.length === 5) {
@@ -74,11 +74,11 @@ function sendWord() {
                 if (wordCount < 7) {
                     wordCount++;
                 }
-                compareWords();
+                compareWords();//compares words and does the rest fills tiles accordingly
                 rowCount++;
-                answersLetters.push(currentWord);
-                saveUserData();
-                currentWord = '';
+                answersLetters.push(currentWord);//keeps the word in answers array (not the colors)
+                saveUserData();//saves answers to localStorage
+                currentWord = '';//in order to start new word at next line
             } else {
                 openNotification('המילה לא קיימת');
             }
@@ -89,6 +89,7 @@ function sendWord() {
 
     }
 }
+
 function openNotification(message) {
     document.getElementById('notify').style.height = "5%";
     document.getElementById('notify').innerHTML = message;
@@ -98,6 +99,7 @@ function openNotification(message) {
     }, 2000);
 
 }
+
 function openNotificationLong(message, bool) {
     document.getElementById('notify').style.height = "5%";
     if (bool === true) {
@@ -105,12 +107,14 @@ function openNotificationLong(message, bool) {
     }
     document.getElementById('notify').innerHTML = message;
 }
+
 function openShareNotificationLong() {
     document.getElementById('notify2').style.height = "5%";
 
     document.getElementById('shareButton').style.visibility = "visible";
 }
-//limits tries
+
+
 function eraseWord() {
     currentWord = '';
     if (wordCount <= rowCount) {
@@ -122,6 +126,7 @@ function eraseWord() {
         }
     }
 }
+
 function eraseLetter() {
     if (currentWord != '') {
         let tile = `tile${rowCount}${currentWord.length}`;
@@ -133,6 +138,7 @@ function eraseLetter() {
     }
 
 }
+
 function compareWords() {
     let answer = [];
     let newWord = '';
@@ -149,7 +155,6 @@ function compareWords() {
         }
     }
 
-
     for (i = 0; i <= 4; i++) {
         if (!greenIndices.includes(i)) {
             for (j = 0; j < newWord.length; j++) {
@@ -159,10 +164,8 @@ function compareWords() {
                     break;
                 }
             }
-
         }
     }
-
     for (i = 0; i <= 4; i++) {
         if (!yellowIndices.includes(i) && !(greenIndices.includes(i))) { //if letter exists anywhere else:
             greyIndices.push(i);
@@ -170,42 +173,42 @@ function compareWords() {
 
         }
     }
-    //splice used green ones
+    //splice used green ones from yelloweIndices:
     for (i = 0; i < greenIndices.length; i++) {
         if (yellowIndices.includes(greenIndices[i])) {
             let x = yellowIndices.indexOf(greenIndices[i]);
             yellowIndices.splice(x, 1);
         }
     }
-
+    //color grey indices:
     for (i = 0; i < greyIndices.length; i++) {
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
-
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.backgroundColor = "rgb(109, 113 ,115)";//gray
         document.getElementById(`tile${wordCount}${greyIndices[i] + 1}`).style.border = "solid rgb(109, 113 ,115)";//gray border
-        paintFinalLetter(currentWord[greyIndices[i]],"rgb(109, 113 ,115)");
+        paintFinalLetter(currentWord[greyIndices[i]], "rgb(109, 113 ,115)");
         answer.splice(greyIndices[i], 0, '⬜');
 
     }
+    //color yellow indices:
     for (i = 0; i < yellowIndices.length; i++) {
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.backgroundColor = "rgb(194, 170, 82)";//yellow
         document.getElementById(`tile${wordCount}${yellowIndices[i] + 1}`).style.border = "solid rgb(194, 170, 82)";//yellow border
-        paintFinalLetter(currentWord[yellowIndices[i]],"rgb(194, 170, 82)");
+        paintFinalLetter(currentWord[yellowIndices[i]], "rgb(194, 170, 82)");
         answer.splice(yellowIndices[i], 0, '🟨');
 
     }
+    //color green indices on top of all else:
     for (i = 0; i < greenIndices.length; i++) {
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).setAttribute('data-animation', 'flip-in');
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.backgroundColor = "rgb(98, 159, 91)";//green
         document.getElementById(`tile${wordCount}${greenIndices[i] + 1}`).style.border = "solid rgb(98, 159, 91)";//green border
-        paintFinalLetter(currentWord[greenIndices[i]],"rgb(98, 159, 91)");
+        paintFinalLetter(currentWord[greenIndices[i]], "rgb(98, 159, 91)");
         answer.splice(greenIndices[i], 0, '🟩');
 
     }
-    
+
     answer = answer.reverse();
-    console.log(typeof answersColors)
     answersColors.push(answer);
 
 
@@ -227,11 +230,7 @@ function compareWords() {
     }
 }
 function checkSpell(word) {
-    // Requiring fs module in which
-    // readFile function is defined.
-    //const fs = require('fs');
     let wordExists = false;
-    //var wordsHebrew = fs.readFileSync('he-IL.dic', 'utf8')
     splitWordsHebrew = hebWords.split(' ');
     for (i = 0; i < splitWordsHebrew.length; i++) {
         if (splitWordsHebrew[i] === (word)) {
@@ -243,12 +242,12 @@ function checkSpell(word) {
     return wordExists;
 
 };
-function paintFinalLetter(letter,color){
-    if (letter==='ן') letter ='נ';
-    if (letter==='ם') letter ='מ';
-    if (letter==='ץ') letter ='צ';
-    if (letter==='ף') letter ='פ';
-    if (letter==='ך') letter ='כ';
+function paintFinalLetter(letter, color) {
+    if (letter === 'ן') letter = 'נ';
+    if (letter === 'ם') letter = 'מ';
+    if (letter === 'ץ') letter = 'צ';
+    if (letter === 'ף') letter = 'פ';
+    if (letter === 'ך') letter = 'כ';
     document.getElementById(letter).style.backgroundColor = color;
     document.getElementById(letter).style.color = "white";
 
@@ -257,74 +256,57 @@ function paintFinalLetter(letter,color){
 function shareResults() {
     let shareResult = `וורדל\'ה # ${numOfWordale}` + "\n";
     shareResult += `נסיון ${wordCount} מתוך 6` + "\n";
-    
+
     for (i = 0; i < answersColors.length; i++) {
         let tempAnswer = answersColors[i].toString();
         const result = tempAnswer.replaceAll(",", "");
         shareResult = shareResult + result + "\n";
 
     }
-    shareResult=shareResult+"\n" +"וורדל בעברית:" +"\n"+"https://yairhasfari.github.io/wordale";
+    shareResult = shareResult + "\n" + "וורדל בעברית:" + "\n" + "https://yairhasfari.github.io/wordale";
     navigator.clipboard.writeText(shareResult);
-   
-    let shareButton="<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
+
+    let shareButton = "<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
     document.getElementById('notify2').innerHTML = shareButton;
 
 }
-function openInstructions(){
-    if (document.getElementById('instructions').style.visibility==="hidden"){
-    document.getElementById('instructions').style.visibility="visible";}
+function openInstructions() {
+    if (document.getElementById('instructions').style.visibility === "hidden") {
+        document.getElementById('instructions').style.visibility = "visible";
+    }
     else {
-        document.getElementById('instructions').style.visibility="hidden";
+        document.getElementById('instructions').style.visibility = "hidden";
     }
 }
-function saveUserData(){
-    localStorage.setItem('userDate',today);
-    localStorage.setItem('answersColors',answersColors);
-    localStorage.setItem('answersLetters',answersLetters)
+function saveUserData() {
+    localStorage.setItem('userDate', today);
+    localStorage.setItem('answersColors', answersColors);
+    localStorage.setItem('answersLetters', answersLetters)
 }
-function loadUserData(){
-    let savedDateString=localStorage.getItem('userDate');
-    let savedDate=new Date(savedDateString);
-    let todayNoHours=today.setHours(0,0,0,0);
-    let savedDateCompare=savedDate.setHours(0,0,0,0)
-    console.log(todayNoHours===savedDateCompare);
-    console.log(today.getDate());
-    if (todayNoHours===savedDateCompare){
-        
+// loadUserData loads the data saved on localStorage and fills the tiles with older answers. this only happens if the day is today.
+function loadUserData() {
+    //because localStorage only saves strings.
+    let savedDateString = localStorage.getItem('userDate');
+    let savedDate = new Date(savedDateString);
+    let todayNoHours = today.setHours(0, 0, 0, 0);//in order to compare date only without time
+    let savedDateCompare = savedDate.setHours(0, 0, 0, 0)//likewise
+    //only if day has changed:
+    if (todayNoHours === savedDateCompare) {
         answersLetters = localStorage.getItem('answersLetters').split(",");
-    }
-    for (k=0;k<answersLetters.length;k++){
-        console.log('i'+k);
-        for (m=0;m<answersLetters[k].length;m++){
-            document.getElementById(`tile${k+1}${m+1}`).innerHTML=answersLetters[k][m];
+        for (k = 0; k < answersLetters.length; k++) {
+            for (m = 0; m < answersLetters[k].length; m++) {
+                document.getElementById(`tile${k + 1}${m + 1}`).innerHTML = answersLetters[k][m];
+            }
+            currentRow = k + 1;
+            currentWord = answersLetters[k];
+            wordCount = k + 1;
+            rowCount = rowCount + 1;
+            compareWords();
+            currentWord = '';
+
         }
 
-        
-        currentRow=k+1;
-        currentWord=answersLetters[k];
-        wordCount=k+1;
-        rowCount=rowCount+1;
-        console.log('i'+k);
-        compareWords();
-        currentWord='';
-        console.log(rowCount);
-        console.log(wordCount)
-
     }
-            // if(answersColors[i]==="⬜"){
-            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(109, 113 ,115)";//gray
-            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(109, 113 ,115)";
-            // } else if (answersColors[i]==="🟨"){
-            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(194, 170, 82)";//gray
-            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(194, 170, 82)";
-            // }
-            // else if(answersColors[i]==="🟩"){
-            //     document.getElementById(`tile${j+1}${i+1}`).style.backgroundColor = "rgb(98, 159, 91)"//gray
-            //     document.getElementById(`tile${j+1}${i+1}`).style.border="solid rgb(98, 159, 91)"
-            // }
-
-   
 }
 loadUserData();
 /*
