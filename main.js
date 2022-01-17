@@ -379,7 +379,7 @@ var x = setInterval(function() {
 }, 1000);
 }
 
-//loadUserData();
+loadUserData();
 /*
 function getWordsToArray(){
     hebWordsArray=[];
