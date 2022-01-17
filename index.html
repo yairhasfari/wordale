@@ -55,16 +55,18 @@
     <div id="notify">
     </div>
     <div id="notify2">
-        <input id="shareButton" onclick="shareResults()" value=" ⬆️ שתף תוצאות">
+        <div id="timer"></div>
+        &nbsp;:וורדל׳ה חדשה
+        &nbsp;|
+       <input id="shareButton" onclick="shareResults()" value="⬆️ שתף תוצאות">
     </div>
     <style>
         #shareButton {
 
             font-family: 'Secular One';
-            font-size: 1.2rem;
+            font-size: clamp(1vw, 4vw, 22px);
             top: 0px;
-            width: auto;
-            max-width: 100%;
+            width:40%;
             box-sizing: border-box;
             color: rgb(255, 255, 255);
             text-align: center;
@@ -75,18 +77,19 @@
             border-color: transparent;
             border-radius: 1rem;
             visibility: visible;
+            padding:0;
         }
 
         #notify {
             display: flex;
             font-family: 'Secular One';
-            font-size: 1.2rem;
+            font-size: clamp(1vw, 4vw, 22px);
             align-items: center;
             justify-content: center;
             margin: 0 auto;
             top: 0px;
-            width: auto;
-            max-width: 50%;
+            width: 500px;
+            max-width: 95vw;
             height: 0%;
             box-sizing: border-box;
             color: white;
@@ -102,16 +105,16 @@
         #notify2 {
             display: flex;
             font-family: 'Secular One';
-            font-size: 1.2rem;
+            font-size: clamp(1vw, 4vw, 22px);
             align-items: center;
             justify-content: center;
             margin: 4 auto;
             top: 0px;
-            width: auto;
-            max-width: 50%;
+            width: 500px;
+            max-width: 95vw;
             height: 0%;
             box-sizing: border-box;
-            color: white;
+            color: rgb(224, 224, 224);
             text-align: center;
             background: rgba(43, 43, 43, 0.6);
             overflow: hidden;

@@ -19,6 +19,7 @@ const startDate = new Date(2022, 0, 11);
 let today = new Date();
 let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "מדינה", "קרטיב", "עבודה", "ליכוד", "ספורט", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
 let pickedWord = pickWord();
+countDownTimer();
 
 
 function pickWord() {
@@ -266,8 +267,9 @@ function shareResults() {
     shareResult = shareResult + "\n" + "וורדל בעברית:" + "\n" + "https://yairhasfari.github.io/wordale";
     navigator.clipboard.writeText(shareResult);
 
-    let shareButton = "<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
-    document.getElementById('notify2').innerHTML = shareButton;
+    // let shareButton = "<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
+    // document.getElementById('notify2').innerHTML = shareButton;
+    document.getElementById("shareButton").value="תוצאות הועתקו ללוח";
 
 }
 function openInstructions() {
@@ -317,6 +319,42 @@ function compareLetters(letterA,letterB){
 
     }
 }
+function countDownTimer(){
+    var todaysDate = new Date()
+    todaysDate.setDate(todaysDate.getDate()+1);
+    todaysDate.setHours(0,0,0,0);
+    var countDownDate=todaysDate.getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  hours=hours.toLocaleString(undefined,{minimumIntegerDigits: 2});
+  minutes=minutes.toLocaleString(undefined,{minimumIntegerDigits: 2});
+  seconds = seconds.toLocaleString(undefined,{minimumIntegerDigits: 2});
+  // Output the result in an element with id="demo"
+  document.getElementById("timer").innerHTML =  hours + ":"
+  + minutes + ":" + seconds;
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "";
+  }
+}, 1000);
+}
+
 loadUserData();
 /*
 function getWordsToArray(){
