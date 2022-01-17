@@ -216,7 +216,7 @@ function compareWords() {
     // color text white
     document.getElementById(`row${wordCount}`).style.color = "white";
     //if correct:
-    if (greenIndices.length === 5) {
+    if (greenIndices.length === 5 || wordCount===6) {
         win = true;
         let winMessage = pickMessage();
         openNotificationLong(winMessage, true);
