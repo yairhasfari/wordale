@@ -196,25 +196,25 @@
             display: flexbox;
             left:50%;
             margin-left:-125px;
-            width: 250px;
+            width: clamp(20vw,70vw,300px);
             
             background-color: rgb(243, 243, 243);
             box-shadow:10px 10px 10px -5px rgb(68, 68, 68);
             position: absolute;
             z-index: 10;
             text-align: right;
-            line-height:35px;
+            line-height:clamp(0.5vw,7vw,30px);
             padding:20px;
             font-family: 'Secular One';
-            font-size:15px;
+            font-size: clamp(0.5vw, 3vw, 17px);
             
         }
 
         .rulesTitle{
-            font-size:30px;
+            font-size:clamp(0.5vw, 9vw, 24px);
         }
         .lineBar{
-            width:250px;
+            width: clamp(20vw,70vw,300px);
             height:2px;
             background-color: rgb(151, 151, 151);
             
@@ -223,11 +223,12 @@
             color:rgb(0, 112, 112);
         }
     </style>
-    <div id="instructions" style="visibility:hidden">
-        <label class="rulesTitle">
+    <div id="instructions" style="visibility:visible">
+        <label class="rulesTitle"><u>
         החוקים 
-        </label>
+       </u> </label>
         <br>
+        
         .יש 6 נסיונות לנחש מילה
         <br>
         .כל ניחוש חייב להיות בן 5 אותיות
@@ -243,8 +244,15 @@
         אות נצבעת בצהוב אם היא קיימת במילה 
         <br>
         :אך במקום הלא נכון בניחוש
+        <br>
         <img src="yellow.png" style="width:200px; margin-bottom:10px;">
         <div class="lineBar"></div>
+        אות נצבעת באפור אם היא בכלל לא
+        <br>
+        קיימת במילה
+        <br><img src="grey.png" style="width:200px; margin-bottom:10px;">
+        <div class="lineBar"></div>
+
         .בכל יום משתנה המילה
         <br>
         <div class="lineBar"></div>
