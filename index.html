@@ -58,13 +58,13 @@
         <div id="timer"></div>
         &nbsp;:וורדל׳ה חדשה
         &nbsp;|
-       <input id="shareButton" onclick="shareResults()" value="⬆️ שתף תוצאות">
+       <button id="shareButton" onclick="shareResults()">⬆️ שתף תוצאות</button>
     </div>
     <style>
         #shareButton {
-
+            
             font-family: 'Secular One';
-            font-size: clamp(1vw, 4vw, 22px);
+            font-size: clamp(0.9vw, 4vw, 22px);
             top: 0px;
             width:40%;
             box-sizing: border-box;
@@ -79,11 +79,14 @@
             visibility: visible;
             padding:0;
         }
-
+        #shareButton:active{
+            background-color: midnightblue;
+        }
+        
         #notify {
             display: flex;
             font-family: 'Secular One';
-            font-size: clamp(1vw, 4vw, 22px);
+            font-size: clamp(0.9vw, 6vw, 22px);
             align-items: center;
             justify-content: center;
             margin: 0 auto;
@@ -105,7 +108,7 @@
         #notify2 {
             display: flex;
             font-family: 'Secular One';
-            font-size: clamp(1vw, 4vw, 22px);
+            font-size: clamp(0.9vw, 4vw, 22px);
             align-items: center;
             justify-content: center;
             margin: 4 auto;
@@ -375,6 +378,7 @@
         <div>
         </div>
     </div><!-- end #keyboard -->
+    <script src="hebwords.js"></script>
     <script src="main.js"></script>
 
 </body>
