@@ -148,7 +148,7 @@ function compareWords() {
     let usedYellowIndices = [];
     for (i = 0; i <= 4; i++) {
         //if letter exists in place:
-        if (currentWord[i] === pickedWord[i]) {
+        if (compareLetters(currentWord[i],pickedWord[i])) {
             greenIndices.push(i);
         } else {
             newWord += pickedWord[i];
@@ -158,7 +158,7 @@ function compareWords() {
     for (i = 0; i <= 4; i++) {
         if (!greenIndices.includes(i)) {
             for (j = 0; j < newWord.length; j++) {
-                if (currentWord[i] === newWord[j]) {
+                if (compareLetters(currentWord[i],newWord[j])) {
                     yellowIndices.push(i);
                     newWord = newWord.slice(0, j) + newWord.slice(j + 1);
                     break;
@@ -305,6 +305,15 @@ function loadUserData() {
             currentWord = '';
 
         }
+
+    }
+}
+function compareLetters(letterA,letterB){
+    if (letterA === letterB | (letterA==="נ" && letterB==="ן" )| (letterA==="צ" && letterB==="ץ" )| (letterA==="פ" && letterB==="ף" )| (letterA==="כ" && letterB==="ך" )| (letterA==="מ" && letterB==="ם")){
+        return true;
+    }
+    else{
+        return false;
 
     }
 }
