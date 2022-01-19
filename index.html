@@ -310,9 +310,9 @@
         #keyboard {
             display: flexbox;
             padding-top: 10px;
-
+            
             border-radius: 10px;
-
+            width: clamp(1vw,100vw,100vw);
             text-align: center;
         }
 
@@ -327,7 +327,7 @@
 
         #keyboard button {
             touch-action: manipulation;
-            width: 40px;
+            width: clamp(1vw,10vw,40px);
             height: 50px;
             font-family: 'Secular One';
             text-align: center;
@@ -361,7 +361,7 @@
             <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
             <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
-            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg" style="width:20px;"></button>
+            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg" id="svgclear" style="width:clamp(1vw,5vw,20px);"></button>
         </div>
         <div>
             <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
