@@ -60,13 +60,13 @@
         <div id="timer"></div>
         &nbsp;:וורדל׳ה חדשה
         &nbsp;|
-       <button id="shareButton" onclick="shareResults()">⬆️ שתף תוצאות</button>
+       <button id="shareButton" onclick="shareResults()">⬆️ שיתוף תוצאות</button>
     </div>
     <style>
         #shareButton {
             
             font-family: 'Secular One';
-            font-size: clamp(0.9vw, 4vw, 22px);
+            font-size: clamp(0.9vw, 4vw, 20px);
             top: 0px;
             width:40%;
             box-sizing: border-box;
@@ -113,7 +113,8 @@
             font-size: clamp(0.9vw, 4vw, 22px);
             align-items: center;
             justify-content: center;
-            margin: 4 auto;
+            margin:4 auto;
+
             top: 0px;
             width: 500px;
             max-width: 95vw;
@@ -133,7 +134,7 @@
         #container {
             display: flexbox;
             font-family: 'Secular One';
-            font-size: 2em;
+            font-size: clamp(1vw,10vw,2em)
 
 
         }
@@ -176,7 +177,7 @@
 
         .tile[data-animation='flip-in'] {
             animation-name: FlipIn;
-            animation-duration: 500ms;
+            animation-duration: 800ms;
             animation-timing-function: ease-in;
         }
 
@@ -310,17 +311,17 @@
         #keyboard {
             display: flexbox;
             padding-top: 10px;
-            
             border-radius: 10px;
-            width: clamp(1vw,100vw,100vw);
+            width: 100vw;
             text-align: center;
+            
         }
 
         #keyboard div {
             overflow: hidden;
             display: flex;
-            align-items: center;
             justify-content: center;
+            margin-right:14px;
             
         }
 
@@ -331,10 +332,11 @@
             height: 50px;
             font-family: 'Secular One';
             text-align: center;
-            font-size: 17;
+            font-size: clamp(0.2vw,8vw,17px);
             border: none;
             border-radius: 5px;
-            margin: 2px;
+            margin: clamp(0.3vw,0.5vw,2px);
+            padding:0;
 
         }
 
@@ -344,8 +346,13 @@
         }
 
         #keyboard .send {
+            color: rgb(255, 255, 255);
+            width: clamp(1.5vw,25vw,100px);
+            background-color: rgb(110, 110, 110);
+        }
+        #keyboard .clear{
             color: rgb(235, 235, 235);
-            width: 70px;
+            /* width: 70px; */
             background-color: rgb(110, 110, 110);
         }
 
@@ -361,7 +368,7 @@
             <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
             <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
             <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
-            <button id="clear" class="letter" onclick="eraseLetter()"><img src="delete-svgrepo-com.svg" id="svgclear" style="width:clamp(1vw,5vw,20px);"></button>
+            <button id="clear" class="clear" onclick="eraseLetter()"><img src="backspace-erase.svg" id="svgclear" style="width:clamp(0.8vw,5vw,15px);"></button>
         </div>
         <div>
             <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
