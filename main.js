@@ -338,6 +338,9 @@ function compareLetters(letterA,letterB){
     if (letterA === letterB | (letterA==="נ" && letterB==="ן" )| (letterA==="צ" && letterB==="ץ" )| (letterA==="פ" && letterB==="ף" )| (letterA==="כ" && letterB==="ך" )| (letterA==="מ" && letterB==="ם")){
         return true;
     }
+    else if((letterB==="נ" && letterA==="ן" )| (letterB==="צ" && letterA==="ץ" )| (letterB==="פ" && letterA==="ף" )| (letterB==="כ" && letterA==="ך" )| (letterB==="מ" && letterA==="ם")){
+        return true
+    }
     else{
         return false;
 
