@@ -3,7 +3,7 @@
 let userWords = []
 let count = 0;
 let win = false;
-
+let endOfGameToday = false;
 
 //let pickedWord = pickWord();
 
@@ -17,9 +17,12 @@ let answersLetters = [];
 let numOfWordale = 0;
 const startDate = new Date(2022, 0, 11);
 let today = new Date();
-let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון","שקדיה", "ריגול","תרופה",'צוללת','שבתאי','רוסיה',"קבינט","דילוג","פשיסט", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
+let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון","שקדיה", "ריגול","תרופה",'צוללת','שבתאי','רוסיה',"קבינט","דילוג","רביעי","מושלג", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
 let pickedWord = pickWord();
 countDownTimer();
+
+//load statistics:
+let guessDistribution;
 
 
 function pickWord() {
@@ -305,9 +308,14 @@ function openInstructions() {
     }
 }
 function saveUserData() {
+    //update statistics:
+    //updateStatistics();
+    //saves the date the user is currently on
     localStorage.setItem('userDate', today);
+    //saves the answers arrays of today
     localStorage.setItem('answersColors', answersColors);
     localStorage.setItem('answersLetters', answersLetters)
+
 }
 // loadUserData loads the data saved on localStorage and fills the tiles with older answers. this only happens if the day is today.
 function loadUserData() {
@@ -381,8 +389,11 @@ var x = setInterval(function() {
   }
 }, 1000);
 }
+function updateStatistics(){
 
+}
 loadUserData();
+
 /*
 function getWordsToArray(){
     hebWordsArray=[];
