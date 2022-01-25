@@ -6,6 +6,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="wordale-favicon.png">
+    <meta property="og:image" itemprop="image" content="wordale-favicon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HYHMGH006"></script>
@@ -18,14 +20,17 @@
     </script>
     <div id="topBar">
         <style>
+
             #topBar {
                 margin: auto;
                 display: flex;
                 justify-content: space-evenly;
-                width: 320px;
+                width: clamp(5vw,100vw,320px);
                 height: 50px;
                 font-family: 'Secular One';
                 overflow: hidden;
+                font-size:clamp(0.5vw,5vw,15px);
+
 
             }
 
@@ -40,10 +45,16 @@
                 border: none;
                 background-color: transparent;
 
+
+            
+            }
+            #topBar img{
+                width:clamp(0.5vw,13vw,40px);
+                
             }
         </style>
         <div><button class="rules">
-            <img src="question-mark.svg" style="width:40px" onclick="openInstructions()">
+            <img src="question-mark.svg"  onclick="openInstructions()">
         </button></div>
         <div>
             <h1 class="title">וורדל׳ה</h1>
@@ -199,13 +210,13 @@
         #instructions {
             display: flexbox;
             left:50%;
-            margin-left:-125px;
+            /* margin-left:-125px; */
             width: clamp(20vw,70vw,300px);
-            
+            transform: translate(-50%,0%);
             background-color: rgb(243, 243, 243);
             box-shadow:10px 10px 10px -5px rgb(68, 68, 68);
-            position: absolute;
-            z-index: 10;
+             position: absolute;
+            /* z-index: 10;  */
             text-align: right;
             line-height:clamp(0.5vw,7vw,40px);
             padding:20px;
@@ -227,12 +238,11 @@
             color:rgb(0, 112, 112);
         }
     </style>
-    <div id="instructions" style="visibility:hidden">
+    <div id="instructions" style="visibility:hidden;">
         <label class="rulesTitle"><u>
         החוקים 
        </u> </label>
         <br>
-        
         .יש 6 נסיונות לנחש מילה
         <br>
         .כל ניחוש חייב להיות בן 5 אותיות
@@ -242,24 +252,26 @@
         <div class="lineBar"></div>
         :אות נצבעת בירוק אם פגעה במקום הנכון
         <br>
-        <img src="green.png" style="width:200px; margin-bottom:10px;">
+        <img src="green.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
         <br>
         <div class="lineBar"></div>
         אות נצבעת בצהוב אם היא קיימת במילה 
         <br>
         :אך במקום הלא נכון בניחוש
         <br>
-        <img src="yellow.png" style="width:200px; margin-bottom:10px;">
+        <img src="yellow.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
         <div class="lineBar"></div>
         אות נצבעת באפור אם היא בכלל לא
         <br>
-        קיימת במילה
-        <br><img src="grey.png" style="width:200px; margin-bottom:10px;">
+        :קיימת במילה
+        <br><img src="grey.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
         <div class="lineBar"></div>
 
         .בכל יום משתנה המילה
         <br>
         <div class="lineBar"></div>
+        .וורדל׳ה - וורדל בעברית
+        <br>
         פותח על ידי יאיר הספרי
         <br>
         <a href="https://powerlanguage.co.uk/wordle/" target="_blank" rel="noopener noreferrer">wordle</a> מבוסס על 
