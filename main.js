@@ -1,24 +1,32 @@
 
 
-let userWords = []
-let count = 0;
+////////* Variables: *///////
+
+// did user win todays game:
 let win = false;
+// did user finish todays game (win or lose):
 let endOfGameToday = false;
-
-//let pickedWord = pickWord();
-
 //which try am i in?
 let rowCount = 1;
-//compare this to know if word was sent
+//wordCount - which try am i after word was guessed:
 let wordCount = 0;
+//saves the letters in a string until word is sent:
 let currentWord = '';
+//array to save the colors of guessed words' letters
 let answersColors = [];
+//array to save the letter of guessed words
 let answersLetters = [];
+//numOfWordale is calculated later by the difference from today to the launch of wordale
 let numOfWordale = 0;
+// the launch date of wordale
 const startDate = new Date(2022, 0, 11);
+//today:
 let today = new Date();
-let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון","שקדיה", "ריגול","תרופה",'צוללת','שבתאי','רוסיה',"קבינט","דילוג","רביעי","מושלג", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
+//listOfWords has all selected hidden words 
+let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "שקדיה", "ריגול", "תרופה", 'צוללת', 'שבתאי', 'רוסיה', "קבינט", "דילוג", "רביעי", "מושלג", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
+//word index is the numOfWordale calculated later on
 let pickedWord = pickWord();
+//set the timer for next wordale:
 countDownTimer();
 
 //load statistics:
@@ -34,15 +42,6 @@ function pickWord() {
     numOfWordale = differenceInDays;
     return listOfWords[differenceInDays];
 }
-function addUserWord() {
-    let userWord = document.getElementById("word").value;
-    storeUserWord(userWord);
-    //event.preventDefault();
-}
-//store user's word in data
-function storeUserWord(userWord) {
-    userWords.push(userWord);
-};
 
 function clickLetter(value) {
     currentRow = document.getElementById(`row${rowCount}`)
@@ -152,7 +151,7 @@ function compareWords() {
     let usedYellowIndices = [];
     for (i = 0; i <= 4; i++) {
         //if letter exists in place:
-        if (compareLetters(currentWord[i],pickedWord[i])) {
+        if (compareLetters(currentWord[i], pickedWord[i])) {
             greenIndices.push(i);
         } else {
             newWord += pickedWord[i];
@@ -162,7 +161,7 @@ function compareWords() {
     for (i = 0; i <= 4; i++) {
         if (!greenIndices.includes(i)) {
             for (j = 0; j < newWord.length; j++) {
-                if (compareLetters(currentWord[i],newWord[j])) {
+                if (compareLetters(currentWord[i], newWord[j])) {
                     yellowIndices.push(i);
                     newWord = newWord.slice(0, j) + newWord.slice(j + 1);
                     break;
@@ -218,45 +217,47 @@ function compareWords() {
 
     // color text white
     document.getElementById(`row${wordCount}`).style.color = "white";
-    //if correct:
-    if (greenIndices.length === 5 || wordCount===6) {
+    //if sentWord is correct display final message and update win:
+    if (greenIndices.length === 5 || wordCount === 6) {
         win = true;
+        endOfGameToday = true;
         let winMessage = pickMessage();
         openNotificationLong(winMessage, true);
         openShareNotificationLong();
 
 
     }
-    function pickMessage(){
-        let messageArray=[];
-        if (wordCount===1){
-            messageArray=['גאוני','אמאל׳ה הצלחת מהר','?די נו, תוך ניחוש','תוצאה מוגזמת','!!!טירוף','שיחקת מדהים','יש לך מוח עצום','תוצאה מפחידה','וואו בדוק רימית','?מי זה? אבשלום קור','אחד מי יודע? את/ה','מגניב מדי בשביל בית ספר','פתרת מהר מדי','בפוקס הראשוןןןן']
-        }
-        if (wordCount===2){
-            messageArray=['נולדת לוורדל׳ה','גאוני','אמאל׳ה הצלחת מהר','אחלה תוצאה שבעולם','נראה שהלך מדהים','!!!טירוף','שני ניחושים? קטונתי','יש לך מוח ענק','תוצאה מפחידה','וואו פשוט וואו','בגלגול הקודם היית מילונאי','אין לנו מה לומר, הצלחת','מזל של מתחילים','הלכת אול אין וזה השתלם אחושקשוקי','לא רואים אבל אני משתחווה']
-        }
-        if (wordCount===3){
-            messageArray=['אני גאה בך','דיייי איזו תוצאה','ניחשת את המילה מהר','שלושה ניחושים? וואו','משחק מדהים שלך','ניחושים ופיגוזים','משחק הבא עלינו','בליגה של הגדולים/גדולות','!טוב מאוד','פשוט מעולה','התרשמנו לטובה ממך','בואנה אחלה תוצאה','הצלחת בגדול, הפרס: מילה חדשה מחר','ידענו שתצליח/י אבל הפתעת']
-        }
-        if (wordCount===4){
-            messageArray=['הצלחתך הצלחתינו.צבי','לא רע בכלל','סחתיין עליך','יופי יופי יופי','כפיים לך, הצלחת','נראה לי שיש פה ניחוש מעולה','נתת בראש','אחלה תוצאה שבעולם','עם התמדה מגיעים להכל','פתרת כמו גדול/ה','אחלה בחלה','יופי טופי','משחק טוב כל הכבוד','שיחקת מעולה','נהדר ומצוין ואחלה ויופי','כבוד הולך אליך על הפתירה','אז לא עברת טסט ראשון, לא נורא','ארבע זה מספר טיפולוגי','כנגד ארבעה ניחושים דיברה המילה']
-        }
-        if (wordCount===5){
-            messageArray=['ולחשוב שמישהו פקפק בך','לא רע','יפה.. קצת חששנו אבל יפה','יששש הצלחת','הידד זה עבד לך בסוף','אז בסוף ניחשת נכון','נלחצנו לרגע','נפלת 4 פעמים, אבל בסוף קמת כמו גדול/ה','בסדר, אז הצלחת. יופי באמת','ניחוש חמישי זה בסדר, תשתפר/י מחר','שיחקת יפה מאוד','יופייייי','ועל זה נאמר - תיסלם','זה שלא ויתרת זה כבר משהו','משחק אגדה זה היה']
-        }
-        if (wordCount===6){
-            messageArray=['וואו נלחצנו לרגע, כל הכבוד','שניה לפני הנפילה','הניחוש הגואל!!! כל הכבוד','מי חשב שלא תצליח/י? לא אנחנו','פאק נפל לנו הלב לתחתון. מזל. כל הכבוד','!!!ניחוש אחרון?? אשכרה','מדובר בגול בדקה התשעים','ידענו שלא תוותר/י','אין עליך בעולם, התמדה זה הסוד','.פאק זה היה קרוב','גדול!!! כמעט הפסדת ואז בסוף - לא','מברוק','אחלה את/ה תאמין/י לי','וואי וואי לא הימרתי שזה יעבוד','פששש, חזק','.אין לי מילים. תרתי משמע','ממש ני-חוש שישי','פעם שישית גלידה, סתם לא','..יפה! כלומר, נחמד','אה הצלחת בסוף? טוב','נו רואה? בסוף זה השתלם','מילה שלי שהצלחת']
-        }
-        
-        randIndex = Math.floor(Math.random()*(messageArray.length));
-        
-        return messageArray[randIndex]
-    }
     //if ended and lost:
     if (wordCount === 6 && greenIndices.length != 5) {
+        endOfGameToday = true;
         let message = `המילה היא ${pickedWord} `;
         openNotificationLong(message, false);
     }
+}
+function pickMessage() {
+    let messageArray = [];
+    if (wordCount === 1) {
+        messageArray = ['גאוני', 'אמאל׳ה הצלחת מהר', '?די נו, תוך ניחוש', 'תוצאה מוגזמת', '!!!טירוף', 'שיחקת מדהים', 'יש לך מוח עצום', 'תוצאה מפחידה', 'וואו בדוק רימית', '?מי זה? אבשלום קור', 'אחד מי יודע? את/ה', 'מגניב מדי בשביל בית ספר', 'פתרת מהר מדי', 'בפוקס הראשוןןןן']
+    }
+    if (wordCount === 2) {
+        messageArray = ['נולדת לוורדל׳ה', 'גאוני', 'אמאל׳ה הצלחת מהר', 'אחלה תוצאה שבעולם', 'נראה שהלך מדהים', '!!!טירוף', 'שני ניחושים? קטונתי', 'יש לך מוח ענק', 'תוצאה מפחידה', 'וואו פשוט וואו', 'בגלגול הקודם היית מילונאי', 'אין לנו מה לומר, הצלחת', 'מזל של מתחילים', 'הלכת אול אין וזה השתלם אחושקשוקי', 'לא רואים אבל אני משתחווה']
+    }
+    if (wordCount === 3) {
+        messageArray = ['אני גאה בך', 'דיייי איזו תוצאה', 'ניחשת את המילה מהר', 'שלושה ניחושים? וואו', 'משחק מדהים שלך', 'ניחושים ופיגוזים', 'משחק הבא עלינו', 'בליגה של הגדולים/גדולות', '!טוב מאוד', 'פשוט מעולה', 'התרשמנו לטובה ממך', 'בואנה אחלה תוצאה', 'הצלחת בגדול, הפרס: מילה חדשה מחר', 'ידענו שתצליח/י אבל הפתעת']
+    }
+    if (wordCount === 4) {
+        messageArray = ['הצלחתך הצלחתינו.צבי', 'לא רע בכלל', 'סחתיין עליך', 'יופי יופי יופי', 'כפיים לך, הצלחת', 'נראה לי שיש פה ניחוש מעולה', 'נתת בראש', 'אחלה תוצאה שבעולם', 'עם התמדה מגיעים להכל', 'פתרת כמו גדול/ה', 'אחלה בחלה', 'יופי טופי', 'משחק טוב כל הכבוד', 'שיחקת מעולה', 'נהדר ומצוין ואחלה ויופי', 'כבוד הולך אליך על הפתירה', 'אז לא עברת טסט ראשון, לא נורא', 'ארבע זה מספר טיפולוגי', 'כנגד ארבעה ניחושים דיברה המילה']
+    }
+    if (wordCount === 5) {
+        messageArray = ['ולחשוב שמישהו פקפק בך', 'לא רע', 'יפה.. קצת חששנו אבל יפה', 'יששש הצלחת', 'הידד זה עבד לך בסוף', 'אז בסוף ניחשת נכון', 'נלחצנו לרגע', 'נפלת 4 פעמים, אבל בסוף קמת כמו גדול/ה', 'בסדר, אז הצלחת. יופי באמת', 'ניחוש חמישי זה בסדר, תשתפר/י מחר', 'שיחקת יפה מאוד', 'יופייייי', 'ועל זה נאמר - תיסלם', 'זה שלא ויתרת זה כבר משהו', 'משחק אגדה זה היה']
+    }
+    if (wordCount === 6) {
+        messageArray = ['וואו נלחצנו לרגע, כל הכבוד', 'שניה לפני הנפילה', 'הניחוש הגואל!!! כל הכבוד', 'מי חשב שלא תצליח/י? לא אנחנו', 'פאק נפל לנו הלב לתחתון. מזל. כל הכבוד', '!!!ניחוש אחרון?? אשכרה', 'מדובר בגול בדקה התשעים', 'ידענו שלא תוותר/י', 'אין עליך בעולם, התמדה זה הסוד', '.פאק זה היה קרוב', 'גדול!!! כמעט הפסדת ואז בסוף - לא', 'מברוק', 'אחלה את/ה תאמין/י לי', 'וואי וואי לא הימרתי שזה יעבוד', 'פששש, חזק', '.אין לי מילים. תרתי משמע', 'ממש ני-חוש שישי', 'פעם שישית גלידה, סתם לא', '..יפה! כלומר, נחמד', 'אה הצלחת בסוף? טוב', 'נו רואה? בסוף זה השתלם', 'מילה שלי שהצלחת']
+    }
+
+    randIndex = Math.floor(Math.random() * (messageArray.length));
+
+    return messageArray[randIndex]
 }
 function checkSpell(word) {
     let wordExists = false;
@@ -296,7 +297,7 @@ function shareResults() {
     navigator.clipboard.writeText(shareResult);
     // let shareButton = "<input id=\"shareButton\" onclick=\"shareResults()\" value=\"תוצאות הועתקו ללוח\">"
     // document.getElementById('notify2').innerHTML = shareButton;
-    document.getElementById("shareButton").innerHTML="תוצאות הועתקו ללוח";
+    document.getElementById("shareButton").innerHTML = "תוצאות הועתקו ללוח";
 
 }
 function openInstructions() {
@@ -342,57 +343,74 @@ function loadUserData() {
 
     }
 }
-function compareLetters(letterA,letterB){
-    if (letterA === letterB | (letterA==="נ" && letterB==="ן" )| (letterA==="צ" && letterB==="ץ" )| (letterA==="פ" && letterB==="ף" )| (letterA==="כ" && letterB==="ך" )| (letterA==="מ" && letterB==="ם")){
+function compareLetters(letterA, letterB) {
+    if (letterA === letterB | (letterA === "נ" && letterB === "ן") | (letterA === "צ" && letterB === "ץ") | (letterA === "פ" && letterB === "ף") | (letterA === "כ" && letterB === "ך") | (letterA === "מ" && letterB === "ם")) {
         return true;
     }
-    else if((letterB==="נ" && letterA==="ן" )| (letterB==="צ" && letterA==="ץ" )| (letterB==="פ" && letterA==="ף" )| (letterB==="כ" && letterA==="ך" )| (letterB==="מ" && letterA==="ם")){
+    else if ((letterB === "נ" && letterA === "ן") | (letterB === "צ" && letterA === "ץ") | (letterB === "פ" && letterA === "ף") | (letterB === "כ" && letterA === "ך") | (letterB === "מ" && letterA === "ם")) {
         return true
     }
-    else{
+    else {
         return false;
 
     }
 }
-function countDownTimer(){
+function countDownTimer() {
     var todaysDate = new Date()
-    todaysDate.setDate(todaysDate.getDate()+1);
-    todaysDate.setHours(0,0,0,0);
-    var countDownDate=todaysDate.getTime();
+    todaysDate.setDate(todaysDate.getDate() + 1);
+    todaysDate.setHours(0, 0, 0, 0);
+    var countDownDate = todaysDate.getTime();
 
-// Update the count down every 1 second
-var x = setInterval(function() {
+    // Update the count down every 1 second
+    var x = setInterval(function () {
 
-  // Get today's date and time
-  var now = new Date().getTime();
-    
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-    
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Get today's date and time
+        var now = new Date().getTime();
 
-  hours=hours.toLocaleString(undefined,{minimumIntegerDigits: 2});
-  minutes=minutes.toLocaleString(undefined,{minimumIntegerDigits: 2});
-  seconds = seconds.toLocaleString(undefined,{minimumIntegerDigits: 2});
-  // Output the result in an element with id="demo"
-  document.getElementById("timer").innerHTML =  hours + ":"
-  + minutes + ":" + seconds;
-    
-  // If the count down is over, write some text 
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("timer").innerHTML = "";
-  }
-}, 1000);
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        hours = hours.toLocaleString(undefined, { minimumIntegerDigits: 2 });
+        minutes = minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 });
+        seconds = seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 });
+        // Output the result in an element with id="demo"
+        document.getElementById("timer").innerHTML = hours + ":"
+            + minutes + ":" + seconds;
+
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "";
+        }
+    }, 1000);
 }
-function updateStatistics(){
+function updateStatistics() {
+    // //get older statistics:
+    // if (endOfGameToday === true) {
+    //     let storagePlayed = localStorage.getItem('played')
+    //     if (storagePlayed !== null) {
+    //         newPlayed = JSON.parse(storagePlayed)+1;
+    //     }
+    //     else newPlayed=1;
+    //     localStorage.setItem('played',newPlayed);
+    // }
+    // /*
+    // localStorage.setItem('guessDistribution',guessDistribution);
+    // localStorage.setItem('played',played);
+    // localStorage.setItem('wins',wins);
+    // localStorage.setItem('streak',streak);
+    // localStorage.setItem('maxStreak',maxStreak);
+    // */
 
 }
 loadUserData();
+
 
 /*
 function getWordsToArray(){

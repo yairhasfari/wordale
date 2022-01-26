@@ -207,6 +207,26 @@
                 transform: rotateX(0);
             }
         }
+        .tile[data-animation='wake'] {
+            animation-name: WakeUp;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in;
+        }
+
+        @keyframes WakeUp {
+            0% {
+                transform: translate(0,0px)
+            }
+
+            50% {
+                transform: translate(0,-10px)
+
+            }
+            100%{
+                transform: translate(0,0px)
+
+            }
+        }
 
         #instructions {
             display: flexbox;
