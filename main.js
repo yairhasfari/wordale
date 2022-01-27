@@ -23,7 +23,7 @@ const startDate = new Date(2022, 0, 11);
 //today:
 let today = new Date();
 //listOfWords has all selected hidden words 
-let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "שקדיה", "ריגול", "תרופה", 'צוללת', 'שבתאי', 'רוסיה', "קבינט", "דילוג", "רביעי", "מושלג", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
+let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "שקדיה", "ריגול", "תרופה", 'צוללת', 'שבתאי', 'רוסיה', "קבינט", "דילוג", "רביעי", "מושלג", "מקטרת", "פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
 //word index is the numOfWordale calculated later on
 let pickedWord = pickWord();
 //set the timer for next wordale:
@@ -83,16 +83,30 @@ function sendWord() {
                 saveUserData();//saves answers to localStorage
                 currentWord = '';//in order to start new word at next line
             } else {
+                animateWakeUp();
                 openNotification('המילה לא קיימת');
             }
         }
         else { //checks if there are enough letters
+            animateWakeUp();
             openNotification("אין מספיק אותיות")
         }
 
     }
 }
-
+function animateWakeUp() {
+    for (i = 1; i <= 5; i++) {
+        setAnimation(i, 'wakeup');
+        function setAnimation(k, animation) { 
+            document.getElementById(`tile${rowCount}${i}`).classList.add(animation) 
+        };
+    }
+    setTimeout(function () {
+        for (j = 1; j <= 5; j++) {
+                document.getElementById(`tile${rowCount}${j}`).setAttribute('data-animation','idle');
+                document.getElementById(`tile${rowCount}${j}`).classList.remove('wakeup');}        
+    }, 800);
+}
 function openNotification(message) {
     document.getElementById('notify').style.height = "5%";
     document.getElementById('notify').innerHTML = message;
@@ -139,6 +153,13 @@ function eraseLetter() {
         currentWord = currentWord.substring(0, currentWord.length - 1);
 
     }
+    //     setInterval(removeAnimation('wakeup'),5000);
+    //     function removeAnimation(animation){ 
+    //         for (i=1;i<=5;i++){
+    //             document.getElementById(`tile${rowCount}${i}`).setAttribute('data-animation','idle');
+    //             document.getElementById(`tile${rowCount}${i}`).classList.remove(animation);
+    //         }
+    // };
 
 }
 
