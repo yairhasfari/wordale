@@ -1,4 +1,5 @@
 
+//  !!   listOfWords is in wordlist.js, hebWords is in hebwords.js    !! //
 
 ////////* Variables: *///////
 
@@ -22,8 +23,6 @@ let numOfWordale = 0;
 const startDate = new Date(2022, 0, 11);
 //today:
 let today = new Date();
-//listOfWords has all selected hidden words 
-let listOfWords = ["שגשוג", "מפלצת", "חיקוי", "השלמה", "טמטום", "הקרבה", "טיעון", "שקדיה", "ריגול", "תרופה", 'צוללת', 'שבתאי', 'רוסיה', "קבינט", "דילוג", "רביעי", "מושלג", "מקטרת","שופטת","יששכר","פעמון", "ספורט", "פלשבק", "מגניב", "גפרור", "אכלוס", "דוגמן", "הוסטל", "יומרה", "מזעזע", "צליבה", "קפאין", "שרטוט", "סטירה", "הפנוט", "פירוק", "מרגמה", "גסיסה", "מעצור", "תאגיד", " שינון", "שוטרת", "כלנית", "געגוע", "טחינה", "מכוער", "סרסור", "עיראק", "מאמין", "יצירה", "מצנפת", "הטמעה", "תכסיס", "תתרכך", "רמקול", "שניצל", "מנסרה", "רטבים", "נזהרת", "חמדתי", "להבין", "גישור", "תינוק", "מצחיק", "כיפור", "פספוס", "קזינו", "צדדים", "חיטוי", "הרגעה", "נסיעה", "ספרדי", "עניבה", "סטייק", "מרקדת", "מפחיד", "כוורת", "גידול"];
 //word index is the numOfWordale calculated later on
 let pickedWord = pickWord();
 //set the timer for next wordale:
@@ -44,6 +43,7 @@ function pickWord() {
 }
 
 function clickLetter(value) {
+    if(endOfGameToday!=true){
     currentRow = document.getElementById(`row${rowCount}`)
     for (let i = 1; i <= 5; i++) {
         let tile = `tile${rowCount}${i}`;
@@ -56,6 +56,7 @@ function clickLetter(value) {
             break;
         }
     }
+}
 }
 function changeToFinal(value) {
     if (currentWord.length === 4) {
