@@ -5,7 +5,9 @@
     <meta name="description" content="וורדל בעברית wordle in hebrew">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant&family=Secular+One&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="wordale-favicon-new.png">
     <meta property="og:image" content="wordale-favicon-new.png">
     <meta property="twitter:image" content="wordale-favicon-new.png">
@@ -59,6 +61,9 @@
         </button></div>
         <div>
             <h1 class="title">וורדל׳ה</h1>
+        </div>
+        <div>
+            <img src="wordale-favicon-new.png">
         </div>
         <div>&nbsp; </div>
     </div>
@@ -264,7 +269,7 @@
             display: flexbox;
             left:50%;
             /* margin-left:-125px; */
-            width: clamp(20vw,70vw,300px);
+            width: clamp(20vw,70vw,400px);
             transform: translate(-50%,0%);
             background-color: rgb(243, 243, 243);
             box-shadow:10px 10px 10px -5px rgb(68, 68, 68);
@@ -275,16 +280,17 @@
             padding:20px;
             font-family: 'Secular One';
             font-size: clamp(0.5vw, 3vw, 17px);
-            
+            flex-direction: column;
         }
 
         .rulesTitle{
             font-size:clamp(0.5vw, 9vw, 24px);
+            align-self: center;
         }
         .lineBar{
-            width: clamp(20vw,70vw,300px);
+            width: clamp(20vw,70vw,400px);
             height:2px;
-            background-color: rgb(151, 151, 151);
+            background-color: rgb(163, 163, 163);
             
         }
         a{
@@ -293,31 +299,29 @@
     </style>
     <div id="instructions" style="visibility:hidden;">
         <label class="rulesTitle"><u>
-        החוקים 
+        ?איך משחקים
        </u> </label>
         <br>
         .יש 6 נסיונות לנחש מילה
         <br>
-        .כל ניחוש חייב להיות בן 5 אותיות
+        .כל ניחוש חייב להיות מילה אמיתית בת 5 אותיות
         <br>
-        .כל ניחוש חייב להיות מילה אמיתית
+         אחרי כל ניחוש, האותיות יצבעו בהתאם לכמה
+         <br> .שהיו קרובות למילה
+        <br>
+        <b>:דוגמאות</b>
+        <div class="lineBar"></div>
+        <img src="green.png" style="width:clamp(10vw,70vw,200px) ;margin-right:-8px;">
+        <br>
+        האות ה׳ קיימת במילה ופגעה במקום הנכון
         <br>
         <div class="lineBar"></div>
-        :אות נצבעת בירוק אם פגעה במקום הנכון
+        <img src="yellow.png" style="width:clamp(10vw,70vw,200px); margin-right:-8px;">
         <br>
-        <img src="green.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
-        <br>
+        האות ק׳ קיימת במילה אך לא פגעה במקום הנכון
         <div class="lineBar"></div>
-        אות נצבעת בצהוב אם היא קיימת במילה 
-        <br>
-        :אך במקום הלא נכון בניחוש
-        <br>
-        <img src="yellow.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
-        <div class="lineBar"></div>
-        אות נצבעת באפור אם היא בכלל לא
-        <br>
-        :קיימת במילה
-        <br><img src="grey.png" style="width:clamp(10vw,70vw,200px); margin-bottom:10px;">
+        <img src="grey.png" style="width:clamp(10vw,70vw,200px); margin-right:-8px;">
+        <br>אף אות לא קיימת במילה
         <div class="lineBar"></div>
 
         .בכל יום משתנה המילה
