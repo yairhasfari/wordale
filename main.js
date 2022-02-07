@@ -435,7 +435,7 @@ loadUserData();
 
 document.addEventListener("visibilitychange",function(){
     //document.getElementById(`tile${rowCount}1`)
-    if(currentWord==='' && document.visibilityState === 'visible'){
+    if(currentWord==='' && document.visibilityState === 'hidden'){
     location.reload();
     }
 });
