@@ -433,7 +433,12 @@ function updateStatistics() {
 }
 loadUserData();
 
-
+document.addEventListener("visibilitychange",function(){
+    //document.getElementById(`tile${rowCount}1`)
+    if(currentWord===''){
+    location.reload();
+    }
+});
 /*
 function getWordsToArray(){
     hebWordsArray=[];
