@@ -439,6 +439,14 @@ document.addEventListener("visibilitychange",function(){
     location.reload();
     }
 });
+// runAtMidnight(window.location.reload);
+
+// function runAtMidnight(fn){
+//     var midnight = new Date();
+//     midnight.setHours(24, 0, 0, 0);
+//     var timeUntilMidnight = midnight.getTime() - Date.now();
+//     setTimeout(fn, timeUntilMidnight);
+// }
 /*
 function getWordsToArray(){
     hebWordsArray=[];
