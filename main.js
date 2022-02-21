@@ -385,10 +385,10 @@ function countDownTimer() {
 
     // Update the count down every 1 second
     var x = setInterval(function () {
-
+        
         // Get today's date and time
         var now = new Date().getTime();
-
+        
         // Find the distance between now and the count down date
         var distance = countDownDate - now;
 
@@ -404,11 +404,13 @@ function countDownTimer() {
         // Output the result in an element with id="demo"
         document.getElementById("timer").innerHTML = hours + ":"
             + minutes + ":" + seconds;
+        if (hours==0 & minutes==0 & seconds==0) {location.reload();};
 
         // If the count down is over, write some text 
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("timer").innerHTML = "";
+            
         }
     }, 1000);
 }
