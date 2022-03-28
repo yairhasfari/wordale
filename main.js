@@ -21,6 +21,7 @@ let answersLetters = [];
 let numOfWordale = 0;
 // the launch date of wordale
 const startDate = new Date(2022, 0, 11);
+const summerClockStartDate = new Date(2022,2,26)
 //today:
 let today = new Date();
 //word index is the numOfWordale calculated later on
@@ -34,10 +35,13 @@ let guessDistribution;
 
 function pickWord() {
     //today = new Date();
-    var differenceInTime = today.getTime() - startDate.getTime();
+    var differenceInTime = today.getTime() - summerClockStartDate.getTime();
+console.log(summerClockStartDate)
+console.log(today)
 
     // To calculate the no. of days between two dates
-    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+    console.log(differenceInDays)
     numOfWordale = differenceInDays;
     return listOfWords[differenceInDays];
 }
@@ -345,6 +349,7 @@ function loadUserData() {
     //because localStorage only saves strings.
     let savedDateString = localStorage.getItem('userDate');
     let savedDate = new Date(savedDateString);
+    console.log(savedDate)
     let todayNoHours = today.setHours(0, 0, 0, 0);//in order to compare date only without time
     let savedDateCompare = savedDate.setHours(0, 0, 0, 0)//likewise
     //only if day has changed:
