@@ -446,6 +446,48 @@ document.addEventListener("visibilitychange",function(){
     location.reload();
     }
 });
+
+const englishKeyboardToHebrew = {
+    a:'ש',
+    b:'נ',
+    c:'ב',
+    d:'ג',
+    e:'ק',
+    f:'כ',
+    g:'ע',
+    h:'י',
+    j:'ח',
+    k:'ל',
+    m:'צ',
+    n:'מ',
+    p:'פ',
+    r:'ר',
+    s:'ד',
+    t:'א',
+    u:'ו',
+    v:'ה',
+    w:'ס',
+    x:'ז',
+    y:'ט',
+    ',':'ת',
+}
+const hebrewLetters = 'אבגדהוזחטיכלמנסעפצקרשת';
+window.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        sendWord();
+    }
+    if (e.key === 'Backspace') {
+        eraseLetter();
+    }
+    if (hebrewLetters.includes(e.key)) {
+        clickLetter(e.key);
+    }
+    const hebrewWordFromEnglish = englishKeyboardToHebrew[e.key.toLowerCase()];
+    if (hebrewLetters.includes(hebrewWordFromEnglish)) {
+        clickLetter(hebrewWordFromEnglish);
+    }
+});
+
 // runAtMidnight(window.location.reload);
 
 // function runAtMidnight(fn){
