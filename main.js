@@ -470,8 +470,19 @@ const englishKeyboardToHebrew = {
     x:'ז',
     y:'ט',
     ',':'ת',
+    '.':'ץ',
+    ';':'ף',
+    'l':'ך',
+    o:'ם',
 }
-const hebrewLetters = 'אבגדהוזחטיכלמנסעפצקרשת';
+const hebrewLetters = 'אבגדהוזחטיכלמנסעפצקרשתםןץףך';
+const suffixLetterToMiddleLetter = {
+    'ם':'מ',
+    'ן':'נ',
+    'ץ':'צ',
+    'ף':'פ',
+    'ך':'כ',
+}
 window.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
         sendWord();
@@ -480,14 +491,13 @@ window.addEventListener('keydown', function (e) {
         eraseLetter();
     }
     if (hebrewLetters.includes(e.key)) {
-        clickLetter(e.key);
+        clickLetter(suffixLetterToMiddleLetter[e.key] || e.key);
     }
     const hebrewWordFromEnglish = englishKeyboardToHebrew[e.key.toLowerCase()];
     if (hebrewLetters.includes(hebrewWordFromEnglish)) {
-        clickLetter(hebrewWordFromEnglish);
+        clickLetter(suffixLetterToMiddleLetter[hebrewWordFromEnglish] || hebrewWordFromEnglish);
     }
 });
-
 // runAtMidnight(window.location.reload);
 
 // function runAtMidnight(fn){
