@@ -455,6 +455,7 @@ const englishKeyboardToHebrew = {
     f:'כ',
     g:'ע',
     h:'י',
+    i:'נ',
     j:'ח',
     k:'ל',
     m:'צ',
@@ -465,14 +466,14 @@ const englishKeyboardToHebrew = {
     t:'א',
     u:'ו',
     v:'ה',
-    w:'ס',
-    x:'ז',
+    x:'ס',
     y:'ט',
+    z:'ז',
     ',':'ת',
     '.':'ץ',
     ';':'ף',
     'l':'ך',
-    o:'ם',
+    o:'מ',
 }
 const hebrewLetters = 'אבגדהוזחטיכלמנסעפצקרשתםןץףך';
 const suffixLetterToMiddleLetter = {
@@ -483,6 +484,7 @@ const suffixLetterToMiddleLetter = {
     'ך':'כ',
 }
 window.addEventListener('keydown', function (e) {
+    console.log(e.key);
     if (e.key === 'Enter') {
         sendWord();
     }
