@@ -35,16 +35,13 @@ let guessDistribution;
 
 function pickWord() {
     //today = new Date();
-    var differenceInTime = today.getTime() - summerClockStartDate.getTime();
-console.log("startdate:" + summerClockStartDate.getTime());
-console.log("today:"+today.getTime());
+    var differenceInTime = today.getTime() - startDate.getTime();
+    //    var differenceInTime = today.getTime() - summerClockStartDate.getTime();
 
     // To calculate the no. of days between two dates
-    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
-    console.log(differenceInDays)
+    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
     numOfWordale = differenceInDays;
-    console.log("differece in Time:  "+Math.floor(differenceInTime/(1000 * 3600 * 24)))
-    console.log("differece in days:  "+differenceInDays)
+    //    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
     return listOfWords[differenceInDays];
 }
 
