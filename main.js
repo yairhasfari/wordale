@@ -39,9 +39,9 @@ function pickWord() {
      var differenceInTime = today.getTime() - summerClockStartDate.getTime();
 
     // To calculate the no. of days between two dates
-    //var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
     numOfWordale = differenceInDays;
-      var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+     // var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
     return listOfWords[differenceInDays];
 }
 
