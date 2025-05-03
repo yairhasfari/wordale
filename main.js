@@ -4,6 +4,8 @@
 ////////* Variables: *///////
 
 // did user win todays game:
+//localStorage.clear();
+//console.log(localStorage.getItem(alreadySentKey));
 let win = false;
 // did user finish todays game (win or lose):
 let endOfGameToday = false;
@@ -32,6 +34,16 @@ countDownTimer();
 //load statistics:
 let guessDistribution;
 
+const stats = {
+    1: 2,
+    2: 10,
+    3: 20,
+    4: 30,
+    5: 25,
+    6: 10,
+    fail: 3
+  };
+  const userGuess = 3;
 
 function pickWord() {
     //today = new Date();
@@ -39,9 +51,12 @@ function pickWord() {
      var differenceInTime = today.getTime() - summerClockStartDate.getTime();
 
     // To calculate the no. of days between two dates
-    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+    //var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+
+    var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+
     numOfWordale = differenceInDays;
-     // var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+
     return listOfWords[differenceInDays];
 }
 
@@ -81,6 +96,7 @@ function sendWord() {
                 if (wordCount < 7) {
                     wordCount++;
                 }
+                console.log("sendword");
                 compareWords();//compares words and does the rest fills tiles accordingly
                 rowCount++;
                 answersLetters.push(currentWord);//keeps the word in answers array (not the colors)
@@ -131,7 +147,7 @@ function openNotificationLong(message, bool) {
 
 function openShareNotificationLong() {
     document.getElementById('notify2').style.height = "5%";
-
+    document.getElementById('notify2').style.visibility = "visible"; // הוסף שורה זו
     document.getElementById('shareButton').style.visibility = "visible";
 }
 
@@ -166,7 +182,25 @@ function eraseLetter() {
     // };
 
 }
+function getCurrentDateKey() {
+    const today = new Date();
+    return `wordle-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+}
+function handleGameEnd(result) {
+    const gameDateKey = getCurrentDateKey();
+    const alreadySentKey = `resultSent-${gameDateKey}`;
+console.log(alreadySentKey);
+console.log(localStorage.getItem(alreadySentKey));
+console.log("afterHandle"+ result);
+    if (localStorage.getItem(alreadySentKey)) {
+        console.log("result"+result);
+        console.log("Result already sent for this game.");
+        return;
+    }
+    sendResultToFirebase(result);  // זו הפונקציה שאתה צריך לכתוב/השתמש בה
 
+    localStorage.setItem(alreadySentKey, "true");
+}
 function compareWords() {
     let answer = [];
     let newWord = '';
@@ -238,26 +272,209 @@ function compareWords() {
 
     answer = answer.reverse();
     answersColors.push(answer);
-
+console.log(greenIndices);
 
     // color text white
     document.getElementById(`row${wordCount}`).style.color = "white";
     //if sentWord is correct display final message and update win:
-    if (greenIndices.length === 5 || wordCount === 6) {
+    // if (greenIndices.length === 5 || wordCount === 6) {
+    if (greenIndices.length === 5) {
         win = true;
+        window.finalGuessCount = wordCount;
+        console.log("win");
+        handleGameEnd(wordCount);
+        //sendResultToFirebase(wordCount);
+        showDistributionStats(wordCount);
         endOfGameToday = true;
+
+
         let winMessage = pickMessage();
+        // fetchPercentile(wordCount, function(percentile, total) {
+        //     openNotificationLong(`הצלחת ב-${wordCount} ניחושים! אתה באחוזון ה-${percentile} מבין ${total} שחקנים.`, true);
+        // });
         openNotificationLong(winMessage, true);
         openShareNotificationLong();
-
-
     }
     //if ended and lost:
     if (wordCount === 6 && greenIndices.length != 5) {
+        console.log(wordCount);
+        console.log("lose");
+        wordCount=wordCount+1;
+        console.log(wordCount);
+        window.finalGuessCount = wordCount;
+        win=false;
+        console.log("beforeHandle" + wordCount);
+        handleGameEnd(wordCount);
+        //sendResultToFirebase(wordCount);
+        showDistributionStats(999);
         endOfGameToday = true;
         let message = `המילה היא ${pickedWord} `;
         openNotificationLong(message, false);
+        openShareNotificationLong();
+
+        // fetchPercentile(wordCount, function(percentile, total) {
+        //     openNotificationLong(`הצלחת ב-${wordCount} ניחושים! אתה באחוזון ה-${percentile} מבין ${total} שחקנים.`, true);
+        // });
     }
+
+}
+// import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+// function openStats() {
+//     const statsModal = document.getElementById("statsModal");
+//     statsModal.style.visibility = "visible";
+  
+//     // נניח שהניחוש האחרון שמור במשתנה גלובלי או session
+//     const userGuess = window.finalGuessCount || 7; // 7 מייצג כישלון
+  
+//     const dateStr = new Date().toISOString().split('T')[0];
+//     const statsRef = ref(db, 'results/' + dateStr);
+  
+//     get(statsRef).then(snapshot => {
+//       if (!snapshot.exists()) {
+//         renderStats({}, userGuess);
+//         return;
+//       }
+  
+//       const allResults = Object.values(snapshot.val());
+  
+//     //   // הוספת המשתמש לתוך ההתפלגות אם טרם נרשם
+//       allResults.push({ guesses: userGuess });
+  
+//       // בניית מפת סטטיסטיקה
+//       const stats = {};
+//       allResults.forEach(entry => {
+//         const key = entry.guesses > 6 ? 'fail' : entry.guesses;
+//         stats[key] = (stats[key] || 0) + 1;
+//       });
+  
+//       renderStats(stats, userGuess);
+//     });
+//   }
+  
+  function closeStats() {
+    document.getElementById('statsModal').style.visibility = 'hidden';
+  }
+  
+  function showDistributionStats(userGuessCount) {
+    const dateStr = new Date().toISOString().split('T')[0];
+    fetch(`https://yairwordale-default-rtdb.firebaseio.com/results/${dateStr}.json`)
+      .then(res => res.json())
+      .then(data => {
+        const stats = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, fail: 0 };
+        const all = Object.values(data || {});
+        for (const r of all) {
+          const g = parseInt(r.guesses);
+          if (g >= 1 && g <= 6) stats[g]++;
+          else stats.fail++;
+        }
+        const total = all.length;
+        const statsDiv = document.getElementById('statsTable');
+        statsDiv.innerHTML = '';
+  
+        for (let i = 1; i <= 6; i++) {
+          const percent = ((stats[i] / total) * 100).toFixed(1);
+          const row = document.createElement('div');
+          row.classList.add('stats-row');
+          if (i === userGuessCount) row.classList.add('highlight');
+  
+          const label = document.createElement('span');
+          label.className = 'stats-label';
+          label.textContent = `ניחוש ${i}`;
+  
+          const bar = document.createElement('div');
+          bar.className = 'stats-bar';
+          bar.style.width = `${percent}%`;
+          bar.textContent = `${percent}%`;
+  
+          row.appendChild(label);
+          row.appendChild(bar);
+          statsDiv.appendChild(row);
+        }
+  
+        const failPercent = ((stats.fail / total) * 100).toFixed(1);
+        const failRow = document.createElement('div');
+        failRow.classList.add('stats-row');
+        if (userGuessCount > 6) failRow.classList.add('highlight');
+  
+        const failLabel = document.createElement('span');
+        failLabel.className = 'stats-label';
+        failLabel.textContent = 'לא הצליחו';
+  
+        const failBar = document.createElement('div');
+        failBar.className = 'stats-bar';
+        failBar.style.width = `${failPercent}%`;
+        failBar.textContent = `${failPercent}%`;
+  
+        failRow.appendChild(failLabel);
+        failRow.appendChild(failBar);
+        statsDiv.appendChild(failRow);
+      });
+  }
+function fetchPercentile(guesses, callback) {
+    const dateStr = new Date().toISOString().split('T')[0];
+    firebase.database().ref('results/' + dateStr).once('value', snapshot => {
+        const allResults = Object.values(snapshot.val() || {});
+        // הוספת המשתמש הנוכחי באופן מקומי
+        allResults.push({ guesses }); // הוספתו באופן וירטואלי
+        const total = allResults.length;
+        const better = allResults.filter(r => r.guesses < guesses).length;
+        const equal = allResults.filter(r => r.guesses == guesses).length;
+        const percentile = Math.round(((better + equal / 2) / total) * 100);
+        callback(percentile, total);
+    });
+}
+// function sendResultToFirebase(guessCount) {
+//     const dateStr = new Date().toISOString().split('T')[0];
+//     firebase.database().ref('results/' + dateStr).push({
+//         guesses: guessCount,
+//         timestamp: Date.now()
+//     });
+//     const allResults = Object.values(snapshot.val());
+  
+//     //   // הוספת המשתמש לתוך ההתפלגות אם טרם נרשם
+//       allResults.push({ guesses: userGuess });
+// }
+function renderStats(stats, userGuess) {
+  const table = document.getElementById("statsTable");
+  table.innerHTML = "";
+
+  const total = Object.values(stats).reduce((a, b) => a + b, 0);
+
+  const keys = [1, 2, 3, 4, 5, 6, 'fail'];
+
+  keys.forEach(key => {
+    const count = stats[key] || 0;
+    const percent = total ? Math.round((count / total) * 100) : 0;
+
+    const row = document.createElement("div");
+    row.className = "statsRow" + ((userGuess == key || (key === 'fail' && userGuess === 7)) ? " highlight" : "");
+    const label = document.createElement("div");
+    label.className = "statsLabel";
+    label.innerText = key === 'fail' ? "לא הצליחו" : `ניחוש ${key}`;
+
+    const bar = document.createElement("div");
+    bar.className = "statsBar";
+
+    const fill = document.createElement("div");
+    fill.className = "statsFill";
+    fill.style.width = percent + "%";
+
+    bar.appendChild(fill);
+
+    const pct = document.createElement("div");
+    pct.className = "statsPercent";
+    pct.innerText = percent + "%";
+
+    row.appendChild(label);
+    row.appendChild(bar);
+    row.appendChild(pct);
+
+    table.appendChild(row);
+  });
+  const statsTitle = document.getElementById("statsTitle");
+const today = new Date();
+const formattedDate = today.toLocaleDateString('he-IL'); // למשל: 03/05/2025
+statsTitle.innerText = `התפלגות ניחושים להיום - ${formattedDate}`;
 }
 function pickMessage() {
     let messageArray = [];
@@ -343,6 +560,10 @@ function saveUserData() {
     localStorage.setItem('answersLetters', answersLetters)
 
 }
+// function saveUserDataEnd (){
+//     localStorage.setItem('end', "yes");
+
+// }
 // loadUserData loads the data saved on localStorage and fills the tiles with older answers. this only happens if the day is today.
 function loadUserData() {
     //because localStorage only saves strings.
@@ -361,6 +582,7 @@ function loadUserData() {
             currentWord = answersLetters[k];
             wordCount = k + 1;
             rowCount = rowCount + 1;
+            
             compareWords();
             currentWord = '';
 
@@ -417,26 +639,8 @@ function countDownTimer() {
         }
     }, 1000);
 }
-function updateStatistics() {
-    // //get older statistics:
-    // if (endOfGameToday === true) {
-    //     let storagePlayed = localStorage.getItem('played')
-    //     if (storagePlayed !== null) {
-    //         newPlayed = JSON.parse(storagePlayed)+1;
-    //     }
-    //     else newPlayed=1;
-    //     localStorage.setItem('played',newPlayed);
-    // }
-    // /*
-    // localStorage.setItem('guessDistribution',guessDistribution);
-    // localStorage.setItem('played',played);
-    // localStorage.setItem('wins',wins);
-    // localStorage.setItem('streak',streak);
-    // localStorage.setItem('maxStreak',maxStreak);
-    // */
 
-}
-loadUserData();
+//loadUserData();
 
 document.addEventListener("visibilitychange",function(){
     //document.getElementById(`tile${rowCount}1`)
@@ -482,7 +686,7 @@ const suffixLetterToMiddleLetter = {
     'ך':'כ',
 }
 window.addEventListener('keydown', function (e) {
-    console.log(e.key);
+
     if (e.key === 'Enter') {
         sendWord();
     }
@@ -497,6 +701,44 @@ window.addEventListener('keydown', function (e) {
         clickLetter(suffixLetterToMiddleLetter[hebrewWordFromEnglish] || hebrewWordFromEnglish);
     }
 });
+// function openStats() {
+//     document.getElementById('statsModal').style.visibility = 'visible';
+//   }
+  
+//   function closeStats() {
+//     document.getElementById('statsModal').style.visibility = 'hidden';
+//   }
+  
+//   function showDistributionStats(userGuessCount) {
+//     const dateStr = new Date().toISOString().split('T')[0];
+//     fetch(`https://yairwordale-default-rtdb.firebaseio.com/results/${dateStr}.json`)
+//       .then(res => res.json())
+//       .then(data => {
+//         const stats = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, fail:0 };
+//         const all = Object.values(data || {});
+//         for (const r of all) {
+//           const g = parseInt(r.guesses);
+//           if (g >= 1 && g <= 6) stats[g]++;
+//           else stats.fail++;
+//         }
+//         const total = all.length;
+//         const statsDiv = document.getElementById('statsTable');
+//         statsDiv.innerHTML = '';
+//         for (let i = 1; i <= 6; i++) {
+//           const percent = ((stats[i] / total) * 100).toFixed(1);
+//           const row = document.createElement('div');
+//           row.textContent = `ניחוש ${i} - ${percent}%`;
+//           if (i === userGuessCount) row.classList.add('highlight');
+//           statsDiv.appendChild(row);
+//         }
+//         // לא הצליחו
+//         const failRow = document.createElement('div');
+//         const failPercent = ((stats.fail / total) * 100).toFixed(1);
+//         failRow.textContent = `לא הצליחו - ${failPercent}%`;
+//         if (userGuessCount > 6) failRow.classList.add('highlight');
+//         statsDiv.appendChild(failRow);
+//       });
+//   }
 
 // runAtMidnight(window.location.reload);
 

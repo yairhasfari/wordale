@@ -2,6 +2,10 @@
 
 <head>
     <title>וורדל׳ה - משחק ב-6 ניחושים</title>
+    <!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     <meta name="description" content=" וורדל׳ה - וורדל בעברית. משחק יומי בו יש לכם 6 נסיונות לנחש את המילה Wordaleh - Wordle in Hebrew. A daily word game where you have 6 tries to guess the word">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +19,94 @@
     <meta http-equiv='cache-control' content='no-cache'> 
     <meta http-equiv='expires' content='0'> 
     <meta http-equiv='pragma' content='no-cache'>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        import { getDatabase, ref, push, get, child } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyAy6_2Vw-1BXws91miKddp2U-7MmmwsTjo",
+          authDomain: "yairwordale.firebaseapp.com",
+          databaseURL: "https://yairwordale-default-rtdb.firebaseio.com",
+          projectId: "yairwordale",
+          storageBucket: "yairwordale.appspot.com",
+          messagingSenderId: "1081840024897",
+          appId: "1:1081840024897:web:889f9b2e360e8a1b98b5c0",
+          measurementId: "G-527F2BTW60"
+        };
+      
+        // אתחול Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase(app);
+      
+        // זמינות גלובלית לפונקציות דרך window (כדי שתוכל לקרוא להן מתוך main.js)
+        window.sendResultToFirebase = function (guessCount) {
+            console.log("inFirebase"+guessCount)
+          const dateStr = new Date().toISOString().split('T')[0];
+          push(ref(db, 'results/' + dateStr), {
+            guesses: guessCount,
+            timestamp: Date.now()
+          });
+        //   const allResults = Object.values(snapshot.val());
+        //   allResults.push({ guesses: guessCount });
+        };
+      
+        window.fetchPercentile = function (guesses, callback) {
+          const dateStr = new Date().toISOString().split('T')[0];
+          get(child(ref(db), 'results/' + dateStr)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const allResults = Object.values(snapshot.val());
+              const total = allResults.length;
+              const better = allResults.filter(r => r.guesses < guesses).length;
+              const equal = allResults.filter(r => r.guesses == guesses).length;
+              const percentile = Math.round(((better + equal / 2) / total) * 100);
+              callback(percentile, total);
+            } else {
+              callback(100, 1); // רק שחקן אחד
+            }
+          });
+        };
+
+        window.openStats = function () {
+    const statsModal = document.getElementById("statsModal");
+
+    statsModal.style.visibility = "visible";
+
+    // נניח שהניחוש האחרון שמור במשתנה גלובלי או session
+    const userGuess = window.finalGuessCount || 7; // 7 מייצג כישלון
+  
+    const dateStr = new Date().toISOString().split('T')[0];
+    const statsRef = ref(db, 'results/' + dateStr);
+  
+    get(statsRef).then(snapshot => {
+      if (!snapshot.exists()) {
+        renderStats({}, userGuess);
+        return;
+      }
+  
+      const allResults = Object.values(snapshot.val());
+  
+    //   // הוספת המשתמש לתוך ההתפלגות אם טרם נרשם
+      allResults.push({ guesses: userGuess });
+  
+      // בניית מפת סטטיסטיקה
+      const stats = {};
+      allResults.forEach(entry => {
+        const key = entry.guesses > 6 ? 'fail' : entry.guesses;
+        stats[key] = (stats[key] || 0) + 1;
+      });
+  
+      renderStats(stats, userGuess);
+    });
+  }
+        /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
+    
+        window.loadUserData();
+
+        /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
+
+      </script>
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -32,12 +124,13 @@
 
         gtag('config', 'G-3HYHMGH006');
     </script>
+
     
     <div id="topBar">
         <style>
 
             #topBar {
-                margin: auto;
+                margin: 4% auto 1%;
                 display: flex;
                 justify-content: space-evenly;
                 width: clamp(5vw,100vw,320px);
@@ -86,39 +179,29 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMD96M6"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <h3 id="demo"></h3>
+    <!-- <h3 id="demo"></h3> -->
 
     <div id="notify">
     </div>
     <div id="notify2">
-        <div id="timer"></div>
-        &nbsp;:וורדל׳ה חדשה
-        &nbsp;|
-       <button id="shareButton" onclick="shareResults()">⬆️ שיתוף תוצאות</button>
-    </div>
+        <div id="timerWithLabel">
+          <div id="timer"></div>
+          <div>:וורדל׳ה חדשה</div>
+        </div>
+        <button id="shareButton" onclick="shareResults()">⬆️ שיתוף תוצאות</button>
+        <button id="statsOpenButton" onclick="openStats()">📊 סטטיסטיקה</button>
+      </div>
     <style>
-        #shareButton {
-            
+    body {
+      font-family: 'Secular One', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+            display: flexbox;
             font-family: 'Secular One';
-            font-size: clamp(0.9vw, 4vw, 20px);
-            top: 0px;
-            width:40%;
-            box-sizing: border-box;
-            color: rgb(255, 255, 255);
-            text-align: center;
-            background: transparent;
-            overflow: hidden;
-            box-sizing: border-box;
-            transition: height .2s;
-            border-color: transparent;
-            border-radius: 1rem;
-            visibility: visible;
-            padding:0;
+            font-size: clamp(1vw,10vw,2em)
         }
-        #shareButton:active{
-            background-color: midnightblue;
-        }
-        
         #notify {
             display: flex;
             font-family: 'Secular One';
@@ -142,36 +225,65 @@
         }
 
         #notify2 {
-            display: flex;
-            font-family: 'Secular One';
-            font-size: clamp(0.9vw, 4vw, 22px);
-            align-items: center;
-            justify-content: center;
-            margin:4 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px clamp(2%, 4%, 10px);
+  font-family: 'Secular One';
+  font-size: clamp(3px, 3vw, 14px);
+  width: 95vw;
+  max-width: 500px;
+  margin: 8px auto;
+  color: rgb(224, 224, 224);
+  background: rgba(43, 43, 43, 0.6);
+  border-radius: 1rem;
+  visibility:  visible;
+  flex-wrap: nowrap;
+  gap: 4px;
+  box-sizing: border-box;
+  
+}
 
-            top: 0px;
-            width: 500px;
-            max-width: 95vw;
-            height: 0%;
-            box-sizing: border-box;
-            color: rgb(224, 224, 224);
-            text-align: center;
-            background: rgba(43, 43, 43, 0.6);
-            overflow: hidden;
-            box-sizing: border-box;
-            transition: height .2s;
-            border-radius: 1rem;
-            visibility: visible;
-        }
+#timerWithLabel,
+#timerWithLabel div,
+#shareButton,
+#statsOpenButton {
+    font-family: 'Secular One', sans-serif;
+  font-size: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#timerWithLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 50%;
+  margin-left:2px;
+  flex-shrink: 1;
+}
+
+#shareButton,
+#statsOpenButton {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 4px 4px;
+  border-radius: 10px;
+  max-width: 33%;
+  flex-shrink: 1;
+  cursor: pointer;
+}
+
+#notify2 {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: height 0.2s ease;
+}
 
 
-        #container {
-            display: flexbox;
-            font-family: 'Secular One';
-            font-size: clamp(1vw,10vw,2em)
-
-
-        }
 
         .row {
             display: flex;
@@ -455,8 +567,128 @@
             /* width: 70px; */
             background-color: rgb(110, 110, 110);
         }
+        #statsModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
+#statsContent {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  font-family: 'Secular One';
+  text-align: right;
+  width: clamp(250px, 80vw, 400px);
+  position: relative;
+}
+#statsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+.statsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.statsLabel {
+  width: 70px;
+  text-align: right;
+}
+
+.statsBar {
+  flex-grow: 1;
+  height: 12px;
+  background-color: #e0e0e0;
+  /* border-radius: 6px; */
+  overflow: hidden;
+  position: relative;
+}
+
+.statsFill {
+  height: 100%;
+  background-color: #6aaa64;
+  /* border-radius: 6px; */
+}
+
+.statsPercent {
+  width: 40px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.statsRow.highlight .statsFill {
+  background-color: #facc15; /* צהוב */
+}
+
+.statsRow.highlight .statsLabel {
+  font-weight: bold;
+}
+#closeStats {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.statsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  border-bottom: 1px solid #ccc; /* הזזנו לכאן */
+  padding: 5px 0;
+}
+
+
+.highlight {
+  background-color: #d8f3dc;
+  font-weight: bold;
+}
     </style>
+    <style>
+
+    #statsTable .stats-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        /* border-bottom: 1px solid #ccc; */
+        direction: rtl;
+        display: none;
+      }
+      
+      #statsTable .stats-label {
+        width: 30%;
+        font-weight: bold;
+      }
+      
+      #statsTable .stats-bar {
+        background-color: #62a36c;
+        color: white;
+        text-align: center;
+        /* border-radius: 5px; */
+        padding: 4px;
+        min-width: 30px;
+        max-width: 70%;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      
+      #statsTable .highlight .stats-bar {
+        background-color: #1e824c;
+      }</style>
     <script>
     </script>
     <div id="keyboard">
@@ -499,6 +731,13 @@
     <div id="coffee">
         ☕ אפשר להזמין אותי לקפה  
     </div></a>
+    <div id="statsModal" style="visibility: hidden;">
+        <div id="statsContent">
+          <button onclick="closeStats()" id="closeStats">✖</button>
+          <h3 id="statsTitle">:התפלגות ניחושים להיום</h3>
+          <div id="statsTable"></div>
+        </div>
+      </div>
     <script src="hebwords.js"></script>
     <script src="wordlist.js"></script>
     <script src="main.js"></script>
