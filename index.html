@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
     <title>וורדל׳ה - משחק ב-6 ניחושים</title>
     <!-- Firebase App (the core Firebase SDK) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -23,7 +24,8 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getDatabase, ref, push, get, child } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-      
+        // import { getDatabase, ref, get, child } from "firebase/database";
+
         const firebaseConfig = {
           apiKey: "AIzaSyAy6_2Vw-1BXws91miKddp2U-7MmmwsTjo",
           authDomain: "yairwordale.firebaseapp.com",
@@ -100,6 +102,32 @@
       renderStats(stats, userGuess);
     });
   }
+  window.countPlayersPerDay = function() {
+
+  const db = getDatabase();
+  const dbRef = ref(db);
+
+  get(child(dbRef, 'results/')).then((snapshot) => {
+    if (!snapshot.exists()) {
+      console.log("אין נתונים.");
+      return;
+    }
+
+    const data = snapshot.val();
+    const counts = {};
+
+    Object.keys(data).forEach(date => {
+      const dayResults = data[date];
+      const numPlayers = Object.keys(dayResults).length;
+      counts[date] = numPlayers;
+    });
+
+    console.log("כמות שחקנים ביום:");
+    console.table(counts);
+  }).catch((error) => {
+    console.error("שגיאה בשליפת נתונים:", error);
+  });
+}
         /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
     
         window.loadUserData();
@@ -568,127 +596,108 @@
             background-color: rgb(110, 110, 110);
         }
         #statsModal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
 
-#statsContent {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  font-family: 'Secular One';
-  text-align: right;
-  width: clamp(250px, 80vw, 400px);
-  position: relative;
-}
-#statsTable {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
-}
-.statsRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
+  #statsContent {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    font-family: 'Rubik', sans-serif;
+    text-align: center;
+    width: clamp(280px, 90vw, 400px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    visibility: hidden;
 
-.statsLabel {
-  width: 70px;
-  text-align: right;
-}
+  }
 
-.statsBar {
-  flex-grow: 1;
-  height: 12px;
-  background-color: #e0e0e0;
-  /* border-radius: 6px; */
-  overflow: hidden;
-  position: relative;
-}
+  .statsTitle {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #222;
+  }
 
-.statsFill {
-  height: 100%;
-  background-color: #6aaa64;
-  /* border-radius: 6px; */
-}
+  #statsTable {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.statsPercent {
-  width: 40px;
-  text-align: left;
-  font-size: 12px;
-}
+  .statsRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f4f6f8;
+    transition: background 0.3s ease;
+  }
 
-.statsRow.highlight .statsFill {
-  background-color: #facc15; /* צהוב */
-}
+  .statsRow.highlight {
+    background-color: #fff8dc;
+    font-weight: bold;
+  }
 
-.statsRow.highlight .statsLabel {
-  font-weight: bold;
-}
-#closeStats {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  border: none;
-  background: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-.statsRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  border-bottom: 1px solid #ccc; /* הזזנו לכאן */
-  padding: 5px 0;
-}
+  .statsLabel {
+    flex: 1;
+    text-align: right;
+    font-size: 14px;
+    color: #333;
+  }
 
+  .statsBar {
+    flex: 3;
+    height: 14px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 10px;
+  }
 
-.highlight {
-  background-color: #d8f3dc;
-  font-weight: bold;
-}
-    </style>
-    <style>
+  .statsFill {
+    height: 100%;
+    background-color: #6aaa64;
+    transition: width 0.4s ease;
+  }
 
-    #statsTable .stats-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 6px 0;
-        /* border-bottom: 1px solid #ccc; */
-        direction: rtl;
-        display: none;
-      }
-      
-      #statsTable .stats-label {
-        width: 30%;
-        font-weight: bold;
-      }
-      
-      #statsTable .stats-bar {
-        background-color: #62a36c;
-        color: white;
-        text-align: center;
-        /* border-radius: 5px; */
-        padding: 4px;
-        min-width: 30px;
-        max-width: 70%;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      
-      #statsTable .highlight .stats-bar {
-        background-color: #1e824c;
-      }</style>
+  .statsRow.highlight .statsFill {
+    background-color: #facc15;
+  }
+
+  .statsPercent {
+    width: 40px;
+    font-size: 12px;
+    text-align: left;
+    color: #333;
+  }
+
+  #closeStats {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: none;
+    background: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s ease;
+  }
+
+  #closeStats:hover {
+    color: #000;
+  }
+
+      </style> 
     <script>
     </script>
     <div id="keyboard">

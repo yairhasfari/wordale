@@ -353,6 +353,8 @@ console.log(greenIndices);
   
   function closeStats() {
     document.getElementById('statsModal').style.visibility = 'hidden';
+    document.getElementById('statsContent').style.visibility = 'hidden';
+
   }
   
   function showDistributionStats(userGuessCount) {
@@ -475,6 +477,8 @@ function renderStats(stats, userGuess) {
 const today = new Date();
 const formattedDate = today.toLocaleDateString('he-IL'); // למשל: 03/05/2025
 statsTitle.innerText = `התפלגות ניחושים להיום - ${formattedDate}`;
+document.getElementById("statsContent").style.visibility = "visible";
+
 }
 function pickMessage() {
     let messageArray = [];
@@ -701,6 +705,7 @@ window.addEventListener('keydown', function (e) {
         clickLetter(suffixLetterToMiddleLetter[hebrewWordFromEnglish] || hebrewWordFromEnglish);
     }
 });
+
 // function openStats() {
 //     document.getElementById('statsModal').style.visibility = 'visible';
 //   }
