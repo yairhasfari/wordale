@@ -356,9 +356,13 @@ console.log(greenIndices);
     document.getElementById('statsContent').style.visibility = 'hidden';
 
   }
-  
   function showDistributionStats(userGuessCount) {
-    const dateStr = new Date().toISOString().split('T')[0];
+    // תאריך לפי השעון המקומי
+    const now = new Date();
+    const dateStr = now.getFullYear() + '-' +
+                    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(now.getDate()).padStart(2, '0');
+  console.log("showDist"+dateStr);
     fetch(`https://yairwordale-default-rtdb.firebaseio.com/results/${dateStr}.json`)
       .then(res => res.json())
       .then(data => {
@@ -370,11 +374,12 @@ console.log(greenIndices);
           else stats.fail++;
         }
         const total = all.length;
+        console.log(total);
         const statsDiv = document.getElementById('statsTable');
         statsDiv.innerHTML = '';
   
         for (let i = 1; i <= 6; i++) {
-          const percent = ((stats[i] / total) * 100).toFixed(1);
+          const percent = total ? ((stats[i] / total) * 100).toFixed(1) : 0;
           const row = document.createElement('div');
           row.classList.add('stats-row');
           if (i === userGuessCount) row.classList.add('highlight');
@@ -393,7 +398,7 @@ console.log(greenIndices);
           statsDiv.appendChild(row);
         }
   
-        const failPercent = ((stats.fail / total) * 100).toFixed(1);
+        const failPercent = total ? ((stats.fail / total) * 100).toFixed(1) : 0;
         const failRow = document.createElement('div');
         failRow.classList.add('stats-row');
         if (userGuessCount > 6) failRow.classList.add('highlight');
@@ -412,6 +417,7 @@ console.log(greenIndices);
         statsDiv.appendChild(failRow);
       });
   }
+  
 function fetchPercentile(guesses, callback) {
     const dateStr = new Date().toISOString().split('T')[0];
     firebase.database().ref('results/' + dateStr).once('value', snapshot => {
@@ -518,6 +524,19 @@ function checkSpell(word) {
     return wordExists;
 
 };
+function getValidDate() {
+    const now = new Date();
+    const israelTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jerusalem" }));
+
+    // אם השעה בישראל לפני 15:30
+    if (israelTime.getHours() < 15 || (israelTime.getHours() === 15 && israelTime.getMinutes() < 30)) {
+        // נחזיר את התאריך של אתמול
+        israelTime.setDate(israelTime.getDate() - 1);
+    }
+
+    return israelTime.toISOString().split('T')[0];
+}
+
 function paintFinalLetter(letter, color) {
     if (letter === 'ן') letter = 'נ';
     if (letter === 'ם') letter = 'מ';

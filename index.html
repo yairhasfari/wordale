@@ -44,15 +44,21 @@
       
         // זמינות גלובלית לפונקציות דרך window (כדי שתוכל לקרוא להן מתוך main.js)
         window.sendResultToFirebase = function (guessCount) {
-            console.log("inFirebase"+guessCount)
-          const dateStr = new Date().toISOString().split('T')[0];
-          push(ref(db, 'results/' + dateStr), {
-            guesses: guessCount,
-            timestamp: Date.now()
-          });
-        //   const allResults = Object.values(snapshot.val());
-        //   allResults.push({ guesses: guessCount });
-        };
+    console.log("inFirebase " + guessCount);
+
+    // תאריך מקומי בפורמט YYYY-MM-DD
+    const now = new Date();
+    const localDateStr = now.getFullYear() + '-' +
+                         String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                         String(now.getDate()).padStart(2, '0');
+
+    console.log("Local Date: " + localDateStr);
+
+    push(ref(db, 'results/' + localDateStr), {
+        guesses: guessCount,
+        timestamp: now.getTime() // זמן נוכחי במילישניות
+    });
+};
       
         window.fetchPercentile = function (guesses, callback) {
           const dateStr = new Date().toISOString().split('T')[0];
