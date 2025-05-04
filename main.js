@@ -725,84 +725,11 @@ window.addEventListener('keydown', function (e) {
     }
 });
 
-// function openStats() {
-//     document.getElementById('statsModal').style.visibility = 'visible';
-//   }
+function openInstructions() {
+    document.getElementById('instructions').style.display = 'block';
+  }
   
-//   function closeStats() {
-//     document.getElementById('statsModal').style.visibility = 'hidden';
-//   }
+  function closeInstructions() {
+    document.getElementById('instructions').style.display = 'none';
+  }
   
-//   function showDistributionStats(userGuessCount) {
-//     const dateStr = new Date().toISOString().split('T')[0];
-//     fetch(`https://yairwordale-default-rtdb.firebaseio.com/results/${dateStr}.json`)
-//       .then(res => res.json())
-//       .then(data => {
-//         const stats = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, fail:0 };
-//         const all = Object.values(data || {});
-//         for (const r of all) {
-//           const g = parseInt(r.guesses);
-//           if (g >= 1 && g <= 6) stats[g]++;
-//           else stats.fail++;
-//         }
-//         const total = all.length;
-//         const statsDiv = document.getElementById('statsTable');
-//         statsDiv.innerHTML = '';
-//         for (let i = 1; i <= 6; i++) {
-//           const percent = ((stats[i] / total) * 100).toFixed(1);
-//           const row = document.createElement('div');
-//           row.textContent = `ניחוש ${i} - ${percent}%`;
-//           if (i === userGuessCount) row.classList.add('highlight');
-//           statsDiv.appendChild(row);
-//         }
-//         // לא הצליחו
-//         const failRow = document.createElement('div');
-//         const failPercent = ((stats.fail / total) * 100).toFixed(1);
-//         failRow.textContent = `לא הצליחו - ${failPercent}%`;
-//         if (userGuessCount > 6) failRow.classList.add('highlight');
-//         statsDiv.appendChild(failRow);
-//       });
-//   }
-
-// runAtMidnight(window.location.reload);
-
-// function runAtMidnight(fn){
-//     var midnight = new Date();
-//     midnight.setHours(24, 0, 0, 0);
-//     var timeUntilMidnight = midnight.getTime() - Date.now();
-//     setTimeout(fn, timeUntilMidnight);
-// }
-/*
-function getWordsToArray(){
-    hebWordsArray=[];
-    const fs = require('fs')
-    let wordExists = false;
-    var wordsHebrew = fs.readFileSync('he-IL.dic', 'utf8')
-    splitWordsHebrew = wordsHebrew.split('\r\n');
-    for (i = 0; i < splitWordsHebrew.length; i++) {
-        if (splitWordsHebrew[i].length===5) {
-            if (!(splitWordsHebrew[i].includes('\"'))){
-            hebWordsArray.push(splitWordsHebrew[i]);
-            }
-        }
-    }
-    var file = fs.createWriteStream('hello2.txt');
-    file.on('error', function(err) { Console.log(err) });
-    hebWordsArray.forEach(value => file.write(`${value} `));
-    file.end();
-}
-*/
-//const fs = require('fs')
-
-// var arr = [];
-// while(arr.length < 800){
-//     var r = Math.floor(Math.random() * 375245) + 1;
-//     if(arr.indexOf(r) === -1) arr.push(r);
-// }
-// console.log(arr);
-/*
-var file = fs.createWriteStream('randoms.txt');
-    file.on('error', function(err) { Console.log(err) });
-    arr.forEach(value => file.write(`${value} `));
-    file.end();*/
-

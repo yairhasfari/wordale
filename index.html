@@ -134,6 +134,8 @@
     console.error("שגיאה בשליפת נתונים:", error);
   });
 }
+console.log(countPlayersPerDay());
+
         /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
     
         window.loadUserData();
@@ -195,7 +197,7 @@
                 
             }
         </style>
-        <div><button class="rules">
+        <div><button class="rules" onclick="openInstructions()">
             <img src="question-mark.svg"  onclick="openInstructions()">
         </button></div>
         <div>
@@ -427,35 +429,112 @@
             }
         }
 
-        #instructions {
-            display: flexbox;
-            left:50%;
-            /* margin-left:-125px; */
-            width: clamp(20vw,70vw,400px);
-            transform: translate(-50%,0%);
-            background-color: rgb(243, 243, 243);
-            box-shadow:10px 10px 10px -5px rgb(68, 68, 68);
-             position: absolute;
-            /* z-index: 10;  */
-            text-align: right;
-            line-height:clamp(0.5vw,7vw,40px);
-            padding:20px;
-            font-family: 'Secular One';
-            font-size: clamp(0.5vw, 3vw, 17px);
-            flex-direction: column;
-            border-radius:clamp(0.5vw,2vw,10px);
-        }
+/* רקע כהה שמאחורי החלון */
+/* סגנון כללי למודאל */
+/* כלל בסיסי לכל הטקסט בחלונית */
+#instructions.modal, .modal-content {
+  font-family: 'Assistant', sans-serif;
+  color: #222;
+}
 
-        .rulesTitle{
-            font-size:clamp(0.5vw, 9vw, 24px);
-            align-self: center;
-        }
-        .lineBar{
-            width: clamp(20vw,70vw,400px);
-            height:2px;
-            background-color: rgb(163, 163, 163);
-            
-        }
+/* עיצוב המודאל */
+#instructions.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* תוכן החלון */
+.modal-content {
+  background-color: #ffffff;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 600px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  text-align: center;
+  direction: rtl;
+  position: relative;
+}
+
+/* כפתור הסגירה (X) כמו בסטטיסטיקה */
+.modal-content .close {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-content .close:hover {
+  color: #000;
+}
+
+/* תמונות וטקסט בדוגמאות */
+.examples-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.example {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 12px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.example h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.example img {
+  display: block;
+  margin: 0 auto 10px auto;
+  max-width: 200px;
+  height: auto;
+}
+
+.example .explanation {
+  font-size: 16px;
+  color: #444;
+  margin: 0;
+}
+
+
+
+
+/* טקסט */
+.instructions-text h2,
+.instructions-text h3 {
+  margin-top: 0;
+}
+
+.instructions-text ul {
+  padding-right: 20px;
+  list-style: disc;
+}
+
+.hidden {
+  display: none;
+}
+
         a{
             color:rgb(0, 112, 112);
             text-decoration: none;
@@ -473,42 +552,51 @@
 
         }
     </style>
-    <div id="instructions" style="visibility:hidden;">
-        <label class="rulesTitle"><u>
-        ?איך משחקים
-       </u> </label>
-        <br>
-        .יש 6 נסיונות לנחש מילה
-        <br>
-        .כל ניחוש חייב להיות מילה אמיתית בת 5 אותיות
-        <br>
-         אחרי כל ניחוש, האותיות יצבעו בהתאם לכמה
-         <br> .שהיו קרובות למילה
-        <br>
-        <b>:דוגמאות</b>
-        <div class="lineBar"></div>
-        <img src="green.png" style="width:clamp(10vw,70vw,200px) ;margin-right:-8px;">
-        <br>
-        האות ה׳ קיימת במילה ופגעה במקום הנכון
-        <br>
-        <div class="lineBar"></div>
-        <img src="yellow.png" style="width:clamp(10vw,70vw,200px); margin-right:-8px;">
-        <br>
-        האות ק׳ קיימת במילה אך לא פגעה במקום הנכון
-        <div class="lineBar"></div>
-        <img src="grey.png" style="width:clamp(10vw,70vw,200px); margin-right:-8px;">
-        <br>אף אות לא קיימת במילה
-        <div class="lineBar"></div>
+<script>
+window.onclick = function(event) {
+  const modal = document.getElementById("instructions");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+</script>
+<!-- חלון הוראות -->
+<div id="instructions" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeInstructions()">✖</span>
+    <h2>איך משחקים?</h2>
+    <p>יש 6 נסיונות לנחש מילה.</p>
+    <p>כל ניחוש חייב להיות מילה אמיתית בת 5 אותיות.</p>
+    <p>אחרי כל ניחוש, האותיות יצבעו בהתאם לקרבתן למילה.</p>
+    
+    <p>דוגמאות:</p>
 
-        .בכל יום משתנה המילה
-        <br>
-        <div class="lineBar"></div>
-        .וורדל׳ה - וורדל בעברית
-        <br>
-        פותח על ידי יאיר הספרי
-        <br>
-        <a href="https://powerlanguage.co.uk/wordle/" target="_blank" rel="noopener noreferrer">wordle</a> מבוסס על 
-    </div>
+    <div class="examples-container">
+      <div class="example">
+        <h3>דוגמה 1</h3>
+        <img src="green.png" alt="ניחוש נכון">
+        <p class="explanation">האות ה׳ קיימת במילה ופגעה במקום הנכון</p>
+      </div>
+    
+      <div class="example">
+        <h3>דוגמה 2</h3>
+        <img src="yellow.png" alt="ניחוש קרוב">
+        <p class="explanation">האות ק׳ קיימת במילה אך לא פגעה במקום הנכון</p>
+      </div>
+    
+      <div class="example">
+        <h3>דוגמה 3</h3>
+        <img src="grey.png" alt="ניחוש שגוי">
+        <p class="explanation">אף אות לא קיימת במילה</p>
+      </div>
+    </div>    
+
+    <p>בכל יום משתנה המילה.</p>
+    <p><strong>וורדל׳ה</strong> – וורדל בעברית.<br>פותח על ידי יאיר הספרי.<br>מבוסס על Wordle.</p>
+  </div>
+</div>
+
+
     <div id="container">
         <div class="row" id="row1">
             <div class="tile" id="tile11" data-animation="idle"></div>
