@@ -1,520 +1,520 @@
 <html>
 
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-    <title>וורדל׳ה - משחק ב-6 ניחושים</title>
-    <!-- Firebase App (the core Firebase SDK) -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <title>וורדל׳ה - משחק ב-6 ניחושים</title>
+  <!-- Firebase App (the core Firebase SDK) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <meta name="description" content=" וורדל׳ה - וורדל בעברית. משחק יומי בו יש לכם 6 נסיונות לנחש את המילה Wordaleh - Wordle in Hebrew. A daily word game where you have 6 tries to guess the word">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="description" content=" וורדל׳ה - וורדל בעברית. משחק יומי בו יש לכם 6 נסיונות לנחש את המילה Wordaleh - Wordle in Hebrew. A daily word game where you have 6 tries to guess the word">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant&family=Secular+One&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="wordale-favicon-new.png">
-    <meta property="og:image" content="wordale-favicon-new.png">
-    <meta property="twitter:image" content="wordale-favicon-new.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <meta http-equiv='cache-control' content='no-cache'> 
-    <meta http-equiv='expires' content='0'> 
-    <meta http-equiv='pragma' content='no-cache'>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getDatabase, ref, push, get, child } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-        // import { getDatabase, ref, get, child } from "firebase/database";
+  <link rel="icon" type="image/x-icon" href="wordale-favicon-new.png">
+  <meta property="og:image" content="wordale-favicon-new.png">
+  <meta property="twitter:image" content="wordale-favicon-new.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv='cache-control' content='no-cache'> 
+  <meta http-equiv='expires' content='0'> 
+  <meta http-equiv='pragma' content='no-cache'>
+  <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+      import { getDatabase, ref, push, get, child } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+      // import { getDatabase, ref, get, child } from "firebase/database";
 
-        const firebaseConfig = {
-          apiKey: "AIzaSyAy6_2Vw-1BXws91miKddp2U-7MmmwsTjo",
-          authDomain: "yairwordale.firebaseapp.com",
-          databaseURL: "https://yairwordale-default-rtdb.firebaseio.com",
-          projectId: "yairwordale",
-          storageBucket: "yairwordale.appspot.com",
-          messagingSenderId: "1081840024897",
-          appId: "1:1081840024897:web:889f9b2e360e8a1b98b5c0",
-          measurementId: "G-527F2BTW60"
-        };
-      
-        // אתחול Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getDatabase(app);
-      
-        // זמינות גלובלית לפונקציות דרך window (כדי שתוכל לקרוא להן מתוך main.js)
-        window.sendResultToFirebase = function (guessCount) {
-    console.log("inFirebase " + guessCount);
+      const firebaseConfig = {
+        apiKey: "AIzaSyAy6_2Vw-1BXws91miKddp2U-7MmmwsTjo",
+        authDomain: "yairwordale.firebaseapp.com",
+        databaseURL: "https://yairwordale-default-rtdb.firebaseio.com",
+        projectId: "yairwordale",
+        storageBucket: "yairwordale.appspot.com",
+        messagingSenderId: "1081840024897",
+        appId: "1:1081840024897:web:889f9b2e360e8a1b98b5c0",
+        measurementId: "G-527F2BTW60"
+      };
+    
+      // אתחול Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getDatabase(app);
+    
+      // זמינות גלובלית לפונקציות דרך window (כדי שתוכל לקרוא להן מתוך main.js)
+window.sendResultToFirebase = function (guessCount) {
+console.log("inFirebase " + guessCount);
 
-    // תאריך מקומי בפורמט YYYY-MM-DD
-    const now = new Date();
-    const localDateStr = now.getFullYear() + '-' +
-                         String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                         String(now.getDate()).padStart(2, '0');
+// קבלת תאריך מתוקן לשעון מקומי (אחיד)
+const dateStr = getLocalDateString();
 
-    console.log("Local Date: " + localDateStr);
+console.log("Local Date: " + dateStr);
 
-    push(ref(db, 'results/' + localDateStr), {
-        guesses: guessCount,
-        timestamp: now.getTime() // זמן נוכחי במילישניות
-    });
+push(ref(db, 'results/' + dateStr), {
+  guesses: guessCount,
+  timestamp: Date.now() // זמן נוכחי במילישניות
+});
 };
-      
-        window.fetchPercentile = function (guesses, callback) {
-          const dateStr = new Date().toISOString().split('T')[0];
-          get(child(ref(db), 'results/' + dateStr)).then((snapshot) => {
-            if (snapshot.exists()) {
-              const allResults = Object.values(snapshot.val());
-              const total = allResults.length;
-              const better = allResults.filter(r => r.guesses < guesses).length;
-              const equal = allResults.filter(r => r.guesses == guesses).length;
-              const percentile = Math.round(((better + equal / 2) / total) * 100);
-              callback(percentile, total);
-            } else {
-              callback(100, 1); // רק שחקן אחד
-            }
-          });
-        };
 
-        window.openStats = function () {
-    const statsModal = document.getElementById("statsModal");
 
-    statsModal.style.visibility = "visible";
+    
+      window.fetchPercentile = function (guesses, callback) {
+const dateStr = getLocalDateString();
+        get(child(ref(db), 'results/' + dateStr)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const allResults = Object.values(snapshot.val());
+            const total = allResults.length;
+            const better = allResults.filter(r => r.guesses < guesses).length;
+            const equal = allResults.filter(r => r.guesses == guesses).length;
+            const percentile = Math.round(((better + equal / 2) / total) * 100);
+            callback(percentile, total);
+          } else {
+            callback(100, 1); // רק שחקן אחד
+          }
+        });
+      };
 
-    // נניח שהניחוש האחרון שמור במשתנה גלובלי או session
-    const userGuess = window.finalGuessCount || 7; // 7 מייצג כישלון
-  
-    const dateStr = new Date().toISOString().split('T')[0];
-    const statsRef = ref(db, 'results/' + dateStr);
-  
-    get(statsRef).then(snapshot => {
-      if (!snapshot.exists()) {
-        renderStats({}, userGuess);
-        return;
-      }
-  
-      const allResults = Object.values(snapshot.val());
-  
-    //   // הוספת המשתמש לתוך ההתפלגות אם טרם נרשם
-      allResults.push({ guesses: userGuess });
-  
-      // בניית מפת סטטיסטיקה
-      const stats = {};
-      allResults.forEach(entry => {
-        const key = entry.guesses > 6 ? 'fail' : entry.guesses;
-        stats[key] = (stats[key] || 0) + 1;
-      });
-  
-      renderStats(stats, userGuess);
-    });
-  }
-  window.countPlayersPerDay = function() {
+      window.openStats = function () {
+  const statsModal = document.getElementById("statsModal");
 
-  const db = getDatabase();
-  const dbRef = ref(db);
+  statsModal.style.visibility = "visible";
 
-  get(child(dbRef, 'results/')).then((snapshot) => {
+  // נניח שהניחוש האחרון שמור במשתנה גלובלי או session
+  const userGuess = window.finalGuessCount || 7; // 7 מייצג כישלון
+
+  const dateStr = getLocalDateString();
+
+  const statsRef = ref(db, 'results/' + dateStr);
+
+  get(statsRef).then(snapshot => {
     if (!snapshot.exists()) {
-      console.log("אין נתונים.");
+      renderStats({}, userGuess);
       return;
     }
 
-    const data = snapshot.val();
-    const counts = {};
+    const allResults = Object.values(snapshot.val());
 
-    Object.keys(data).forEach(date => {
-      const dayResults = data[date];
-      const numPlayers = Object.keys(dayResults).length;
-      counts[date] = numPlayers;
+  //   // הוספת המשתמש לתוך ההתפלגות אם טרם נרשם
+    allResults.push({ guesses: userGuess });
+
+    // בניית מפת סטטיסטיקה
+    const stats = {};
+    allResults.forEach(entry => {
+      const key = entry.guesses > 6 ? 'fail' : entry.guesses;
+      stats[key] = (stats[key] || 0) + 1;
     });
 
-    console.log("כמות שחקנים ביום:");
-    console.table(counts);
-  }).catch((error) => {
-    console.error("שגיאה בשליפת נתונים:", error);
+    renderStats(stats, userGuess);
   });
+}
+window.countPlayersPerDay = function() {
+
+const db = getDatabase();
+const dbRef = ref(db);
+
+get(child(dbRef, 'results/')).then((snapshot) => {
+  if (!snapshot.exists()) {
+    console.log("אין נתונים.");
+    return;
+  }
+
+  const data = snapshot.val();
+  const counts = {};
+
+  Object.keys(data).forEach(date => {
+    const dayResults = data[date];
+    const numPlayers = Object.keys(dayResults).length;
+    counts[date] = numPlayers;
+  });
+
+  console.log("כמות שחקנים ביום:");
+  console.table(counts);
+}).catch((error) => {
+  console.error("שגיאה בשליפת נתונים:", error);
+});
 }
 console.log(countPlayersPerDay());
 
-        /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
-    
-        window.loadUserData();
+      /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
+  
+      window.loadUserData();
 
-        /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
+      /*LOAD LOAD LOAD LOAD LOAD LOAD LOAD IMPORTANT*/
 
-      </script>
-    <script type="text/javascript" src="https://livejs.com/live.js"></script>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TMD96M6');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HYHMGH006"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-3HYHMGH006');
     </script>
+  <script type="text/javascript" src="https://livejs.com/live.js"></script>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TMD96M6');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HYHMGH006"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
 
-    
-    <div id="topBar">
-        <style>
+      gtag('config', 'G-3HYHMGH006');
+  </script>
 
-            #topBar {
-                margin: 4% auto 1%;
-                display: flex;
-                justify-content: space-evenly;
-                width: clamp(5vw,100vw,320px);
-                height: 50px;
-                font-family: 'Secular One';
-                overflow: hidden;
-                font-size:clamp(0.5vw,5vw,15px);
+  
+  <div id="topBar">
+      <style>
 
-
-            }
-
-            #topBar div {
-                text-align: center;
-                align-self: center;
-                /* justify-self: center; */
-
-            }
-
-            #topBar button {
-                border: none;
-                background-color: transparent;
+          #topBar {
+              margin: 4% auto 1%;
+              display: flex;
+              justify-content: space-evenly;
+              width: clamp(5vw,100vw,320px);
+              height: 50px;
+              font-family: 'Secular One';
+              overflow: hidden;
+              font-size:clamp(0.5vw,5vw,15px);
 
 
-            
-            }
-            #topBar img{
-                width:clamp(0.5vw,13vw,40px);
-                
-            }
-        </style>
-        <div><button class="rules" onclick="openInstructions()">
-            <img src="question-mark.svg"  onclick="openInstructions()">
-        </button></div>
-        <div>
-            <h1 class="title">וורדל׳ה</h1>
-        </div>
-        <div>
-            <img src="wordale-favicon-new.png">
-        </div>
-        <div>&nbsp; </div>
-    </div>
+          }
+
+          #topBar div {
+              text-align: center;
+              align-self: center;
+              /* justify-self: center; */
+
+          }
+
+          #topBar button {
+              border: none;
+              background-color: transparent;
+
+
+          
+          }
+          #topBar img{
+              width:clamp(0.5vw,13vw,40px);
+              
+          }
+      </style>
+      <div><button class="rules" onclick="openInstructions()">
+          <img src="question-mark.svg"  onclick="openInstructions()">
+      </button></div>
+      <div>
+          <h1 class="title">וורדל׳ה</h1>
+      </div>
+      <div>
+          <img src="wordale-favicon-new.png">
+      </div>
+      <div>&nbsp; </div>
+  </div>
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMD96M6"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <!-- <h3 id="demo"></h3> -->
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- <h3 id="demo"></h3> -->
 
-    <div id="notify">
-    </div>
-    <div id="notify2">
-        <div id="timerWithLabel">
-          <div id="timer"></div>
-          <div>:וורדל׳ה חדשה</div>
-        </div>
-        <button id="shareButton" onclick="shareResults()">⬆️ שיתוף תוצאות</button>
-        <button id="statsOpenButton" onclick="openStats()">📊 סטטיסטיקה</button>
+  <div id="notify">
+  </div>
+  <div id="notify2">
+      <div id="timerWithLabel">
+        <div id="timer"></div>
+        <div>:וורדל׳ה חדשה</div>
       </div>
-    <style>
-    body {
-      font-family: 'Secular One', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    #container {
-            display: flexbox;
-            font-family: 'Secular One';
-            font-size: clamp(1vw,10vw,2em)
-        }
-        #notify {
-            display: flex;
-            font-family: 'Secular One';
-            font-size: clamp(0.9vw, 4vw, 22px);
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            top: 0px;
-            width: 500px;
-            max-width: 95vw;
-            height: 0%;
-            box-sizing: border-box;
-            color: white;
-            text-align: center;
-            background: rgba(43, 43, 43, 0.6);
-            overflow: hidden;
-            box-sizing: border-box;
-            transition: height .2s;
-            border-radius: 1rem;
-            visibility: visible;
-        }
+      <button id="shareButton" onclick="shareResults()">⬆️ שיתוף תוצאות</button>
+      <button id="statsOpenButton" onclick="openStats()">📊 סטטיסטיקה</button>
+    </div>
+  <style>
+  body {
+    font-family: 'Secular One', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  #container {
+          display: flexbox;
+          font-family: 'Secular One';
+          font-size: clamp(1vw,10vw,2em)
+      }
+      #notify {
+          display: flex;
+          font-family: 'Secular One';
+          font-size: clamp(0.9vw, 4vw, 22px);
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto;
+          top: 0px;
+          width: 500px;
+          max-width: 95vw;
+          height: 0%;
+          box-sizing: border-box;
+          color: white;
+          text-align: center;
+          background: rgba(43, 43, 43, 0.6);
+          overflow: hidden;
+          box-sizing: border-box;
+          transition: height .2s;
+          border-radius: 1rem;
+          visibility: visible;
+      }
 
-        #notify2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px clamp(2%, 4%, 10px);
-  font-family: 'Secular One';
-  font-size: clamp(3px, 3vw, 14px);
-  width: 95vw;
-  max-width: 500px;
-  margin: 8px auto;
-  color: rgb(224, 224, 224);
-  background: rgba(43, 43, 43, 0.6);
-  border-radius: 1rem;
-  visibility:  visible;
-  flex-wrap: nowrap;
-  gap: 4px;
-  box-sizing: border-box;
-  
+      #notify2 {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0px clamp(2%, 4%, 10px);
+font-family: 'Secular One';
+font-size: clamp(3px, 3vw, 14px);
+width: 95vw;
+max-width: 500px;
+margin: 8px auto;
+color: rgb(224, 224, 224);
+background: rgba(43, 43, 43, 0.6);
+border-radius: 1rem;
+visibility:  visible;
+flex-wrap: nowrap;
+gap: 4px;
+box-sizing: border-box;
+
 }
 
 #timerWithLabel,
 #timerWithLabel div,
 #shareButton,
 #statsOpenButton {
-    font-family: 'Secular One', sans-serif;
-  font-size: inherit;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: 'Secular One', sans-serif;
+font-size: inherit;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 #timerWithLabel {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  max-width: 50%;
-  margin-left:2px;
-  flex-shrink: 1;
+display: flex;
+align-items: center;
+gap: 6px;
+max-width: 50%;
+margin-left:2px;
+flex-shrink: 1;
 }
 
 #shareButton,
 #statsOpenButton {
-  background-color: transparent;
-  color: white;
-  border: none;
-  padding: 4px 4px;
-  border-radius: 10px;
-  max-width: 33%;
-  flex-shrink: 1;
-  cursor: pointer;
+background-color: transparent;
+color: white;
+border: none;
+padding: 4px 4px;
+border-radius: 10px;
+max-width: 33%;
+flex-shrink: 1;
+cursor: pointer;
 }
 
 #notify2 {
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-  transition: height 0.2s ease;
+height: 0;
+overflow: hidden;
+visibility: hidden;
+transition: height 0.2s ease;
 }
 
 
 
-        .row {
-            display: flex;
-            /* flex-wrap: wrap; */
-            flex-direction: row-reverse;
-            justify-content: center;
-        }
+      .row {
+          display: flex;
+          /* flex-wrap: wrap; */
+          flex-direction: row-reverse;
+          justify-content: center;
+      }
 
-        .tile {
-            margin: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border: solid rgb(212, 212, 212);
-            border-radius: 5px;
-            vertical-align: top;
-        }
+      .tile {
+          margin: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border: solid rgb(212, 212, 212);
+          border-radius: 5px;
+          vertical-align: top;
+      }
 
-        .tile[data-animation='pop'] {
-            animation-name: PopIn;
-            animation-duration: 100ms;
-        }
+      .tile[data-animation='pop'] {
+          animation-name: PopIn;
+          animation-duration: 100ms;
+      }
 
-        @keyframes PopIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
+      @keyframes PopIn {
+          from {
+              transform: scale(0.8);
+              opacity: 0;
+          }
 
-            40% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
-        }
+          40% {
+              transform: scale(1.1);
+              opacity: 1;
+          }
+      }
 
-        .tile[data-animation='flip-in'] {
-            animation-name: FlipIn;
-            animation-duration: 800ms;
-            animation-timing-function: ease-in;
-        }
+      .tile[data-animation='flip-in'] {
+          animation-name: FlipIn;
+          animation-duration: 800ms;
+          animation-timing-function: ease-in;
+      }
 
-        @keyframes FlipIn {
-            0% {
-                transform: rotateX(0);
-            }
+      @keyframes FlipIn {
+          0% {
+              transform: rotateX(0);
+          }
 
-            50% {
-                transform: rotateX(-90deg);
-            }
+          50% {
+              transform: rotateX(-90deg);
+          }
 
-            100% {
-                transform: rotateX(0);
-            }
-        }
-        .tile.wakeup {
-            animation-name: WakeUp;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in;
-        }
+          100% {
+              transform: rotateX(0);
+          }
+      }
+      .tile.wakeup {
+          animation-name: WakeUp;
+          animation-duration: 400ms;
+          animation-timing-function: ease-in;
+      }
 
-        @keyframes WakeUp {
-            0% {
-                transform: translate(0px,0px)
-            }
+      @keyframes WakeUp {
+          0% {
+              transform: translate(0px,0px)
+          }
 
-            10% {
-                transform: translate(10px,0px)
+          10% {
+              transform: translate(10px,0px)
 
-            }
-            20% {
-                transform: translate(-10px,0px)
+          }
+          20% {
+              transform: translate(-10px,0px)
 
-            }
-            30% {
-                transform: translate(8px,0px)
+          }
+          30% {
+              transform: translate(8px,0px)
 
-            }
-            40% {
-                transform: translate(-8px,0px)
+          }
+          40% {
+              transform: translate(-8px,0px)
 
-            }
-            50% {
-                transform: translate(6px,0px)
+          }
+          50% {
+              transform: translate(6px,0px)
 
-            }
-            60% {
-                transform: translate(-6px,0px)
+          }
+          60% {
+              transform: translate(-6px,0px)
 
-            }
-            70% {
-                transform: translate(4px,0px)
+          }
+          70% {
+              transform: translate(4px,0px)
 
-            }
-            80% {
-                transform: translate(-4px,0px)
+          }
+          80% {
+              transform: translate(-4px,0px)
 
-            }
-            90% {
-                transform: translate(2px,0px)
+          }
+          90% {
+              transform: translate(2px,0px)
 
-            }
-            100%{
-                transform: translate(0,0px)
+          }
+          100%{
+              transform: translate(0,0px)
 
-            }
-        }
+          }
+      }
 
 /* רקע כהה שמאחורי החלון */
 /* סגנון כללי למודאל */
 /* כלל בסיסי לכל הטקסט בחלונית */
 #instructions.modal, .modal-content {
-  font-family: 'Assistant', sans-serif;
-  color: #222;
+font-family: 'Assistant', sans-serif;
+color: #222;
 }
 
 /* עיצוב המודאל */
 #instructions.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0,0,0,0.5);
 }
 
 /* תוכן החלון */
 .modal-content {
-  background-color: #ffffff;
-  margin: 5% auto;
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 600px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
-  text-align: center;
-  direction: rtl;
-  position: relative;
+background-color: #ffffff;
+margin: 5% auto;
+padding: 30px;
+border-radius: 16px;
+max-width: 600px;
+box-shadow: 0 0 15px rgba(0,0,0,0.3);
+text-align: center;
+direction: rtl;
+position: relative;
 }
 
 /* כפתור הסגירה (X) כמו בסטטיסטיקה */
 .modal-content .close {
-  position: absolute;
-  top: 15px;
-  left: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #888;
-  cursor: pointer;
-  transition: color 0.3s;
+position: absolute;
+top: 15px;
+left: 20px;
+font-size: 28px;
+font-weight: bold;
+color: #888;
+cursor: pointer;
+transition: color 0.3s;
 }
 
 .modal-content .close:hover {
-  color: #000;
+color: #000;
 }
 
 /* תמונות וטקסט בדוגמאות */
 .examples-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
+margin-top: 20px;
+display: flex;
+flex-direction: column;
+gap: 16px;
+align-items: center;
 }
 
 .example {
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  padding: 12px 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  text-align: center;
-  max-width: 300px;
-  width: 100%;
+background-color: #f9f9f9;
+border-radius: 12px;
+padding: 12px 12px;
+box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+text-align: center;
+max-width: 300px;
+width: 100%;
 }
 
 .example h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #333;
+font-size: 18px;
+margin-bottom: 8px;
+color: #333;
 }
 
 .example img {
-  display: block;
-  margin: 0 auto 10px auto;
-  max-width: 200px;
-  height: auto;
+display: block;
+margin: 0 auto 10px auto;
+max-width: 200px;
+height: auto;
 }
 
 .example .explanation {
-  font-size: 16px;
-  color: #444;
-  margin: 0;
+font-size: 16px;
+color: #444;
+margin: 0;
 }
 
 
@@ -523,327 +523,327 @@ console.log(countPlayersPerDay());
 /* טקסט */
 .instructions-text h2,
 .instructions-text h3 {
-  margin-top: 0;
+margin-top: 0;
 }
 
 .instructions-text ul {
-  padding-right: 20px;
-  list-style: disc;
+padding-right: 20px;
+list-style: disc;
 }
 
 .hidden {
-  display: none;
+display: none;
 }
 
-        a{
-            color:rgb(0, 112, 112);
-            text-decoration: none;
-        }
-        #coffee {
-            margin: auto;
-                display: flex;
-                justify-content: space-evenly;
-                width: clamp(5vw,100vw,320px);
-                height: 50px;
-                font-family: 'Secular One';
-                overflow: hidden;
+      a{
+          color:rgb(0, 112, 112);
+          text-decoration: none;
+      }
+      #coffee {
+          margin: auto;
+              display: flex;
+              justify-content: space-evenly;
+              width: clamp(5vw,100vw,320px);
+              height: 50px;
+              font-family: 'Secular One';
+              overflow: hidden;
 
-                font-size:clamp(0.5vw,7vw,13px);
+              font-size:clamp(0.5vw,7vw,13px);
 
-        }
-    </style>
+      }
+  </style>
 <script>
 window.onclick = function(event) {
-  const modal = document.getElementById("instructions");
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+const modal = document.getElementById("instructions");
+if (event.target == modal) {
+  modal.style.display = "none";
+}
 };
 </script>
 <!-- חלון הוראות -->
 <div id="instructions" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeInstructions()">✖</span>
-    <h2>איך משחקים?</h2>
-    <p>יש 6 נסיונות לנחש מילה.</p>
-    <p>כל ניחוש חייב להיות מילה אמיתית בת 5 אותיות.</p>
-    <p>אחרי כל ניחוש, האותיות יצבעו בהתאם לקרבתן למילה.</p>
-    
-    <p>דוגמאות:</p>
+<div class="modal-content">
+  <span class="close" onclick="closeInstructions()">✖</span>
+  <h2>איך משחקים?</h2>
+  <p>יש 6 נסיונות לנחש מילה.</p>
+  <p>כל ניחוש חייב להיות מילה אמיתית בת 5 אותיות.</p>
+  <p>אחרי כל ניחוש, האותיות יצבעו בהתאם לקרבתן למילה.</p>
+  
+  <p>דוגמאות:</p>
 
-    <div class="examples-container">
-      <div class="example">
-        <h3>דוגמה 1</h3>
-        <img src="green.png" alt="ניחוש נכון">
-        <p class="explanation">האות ה׳ קיימת במילה ופגעה במקום הנכון</p>
-      </div>
-    
-      <div class="example">
-        <h3>דוגמה 2</h3>
-        <img src="yellow.png" alt="ניחוש קרוב">
-        <p class="explanation">האות ק׳ קיימת במילה אך לא פגעה במקום הנכון</p>
-      </div>
-    
-      <div class="example">
-        <h3>דוגמה 3</h3>
-        <img src="grey.png" alt="ניחוש שגוי">
-        <p class="explanation">אף אות לא קיימת במילה</p>
-      </div>
-    </div>    
+  <div class="examples-container">
+    <div class="example">
+      <h3>דוגמה 1</h3>
+      <img src="green.png" alt="ניחוש נכון">
+      <p class="explanation">האות ה׳ קיימת במילה ופגעה במקום הנכון</p>
+    </div>
+  
+    <div class="example">
+      <h3>דוגמה 2</h3>
+      <img src="yellow.png" alt="ניחוש קרוב">
+      <p class="explanation">האות ק׳ קיימת במילה אך לא פגעה במקום הנכון</p>
+    </div>
+  
+    <div class="example">
+      <h3>דוגמה 3</h3>
+      <img src="grey.png" alt="ניחוש שגוי">
+      <p class="explanation">אף אות לא קיימת במילה</p>
+    </div>
+  </div>    
 
-    <p>בכל יום משתנה המילה.</p>
-    <p><strong>וורדל׳ה</strong> – וורדל בעברית.<br>פותח על ידי יאיר הספרי.<br>מבוסס על Wordle.</p>
-  </div>
+  <p>בכל יום משתנה המילה.</p>
+  <p><strong>וורדל׳ה</strong> – וורדל בעברית.<br>פותח על ידי יאיר הספרי.<br>מבוסס על Wordle.</p>
+</div>
 </div>
 
 
-    <div id="container">
-        <div class="row" id="row1">
-            <div class="tile" id="tile11" data-animation="idle"></div>
-            <div class="tile" id="tile12" data-animation="idle"></div>
-            <div class="tile" id="tile13" data-animation="idle"></div>
-            <div class="tile" id="tile14" data-animation="idle"></div>
-            <div class="tile" id="tile15" data-animation="idle"></div>
-        </div>
-        <div class="row" id="row2">
-            <div class="tile" id="tile21" data-animation="idle"></div>
-            <div class="tile" id="tile22" data-animation="idle"></div>
-            <div class="tile" id="tile23" data-animation="idle"></div>
-            <div class="tile" id="tile24" data-animation="idle"></div>
-            <div class="tile" id="tile25" data-animation="idle"></div>
-        </div>
-        <div class="row" id="row3">
-            <div class="tile" id="tile31" data-animation="idle"></div>
-            <div class="tile" id="tile32" data-animation="idle"></div>
-            <div class="tile" id="tile33" data-animation="idle"></div>
-            <div class="tile" id="tile34" data-animation="idle"></div>
-            <div class="tile" id="tile35" data-animation="idle"></div>
-        </div>
-        <div class="row" id="row4">
-            <div class="tile" id="tile41" data-animation="idle"></div>
-            <div class="tile" id="tile42" data-animation="idle"></div>
-            <div class="tile" id="tile43" data-animation="idle"></div>
-            <div class="tile" id="tile44" data-animation="idle"></div>
-            <div class="tile" id="tile45" data-animation="idle"></div>
-        </div>
-        <div class="row" id="row5">
-            <div class="tile" id="tile51" data-animation="idle"></div>
-            <div class="tile" id="tile52" data-animation="idle"></div>
-            <div class="tile" id="tile53" data-animation="idle"></div>
-            <div class="tile" id="tile54" data-animation="idle"></div>
-            <div class="tile" id="tile55" data-animation="idle"></div>
-        </div>
-        <div class="row" id="row6">
-            <div class="tile" id="tile61" data-animation="idle"></div>
-            <div class="tile" id="tile62" data-animation="idle"></div>
-            <div class="tile" id="tile63" data-animation="idle"></div>
-            <div class="tile" id="tile64" data-animation="idle"></div>
-            <div class="tile" id="tile65" data-animation="idle"></div>
-        </div>
-    </div>
-    <style>
-        #keyboard {
-            display: flexbox;
-            padding-top: 10px;
-            border-radius: 10px;
-            width: 100vw;
-            text-align: center;
-            
-        }
-
-        #keyboard div {
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            margin-right:14px;
-            
-        }
-
-
-        #keyboard button {
-            touch-action: manipulation;
-            width: clamp(1vw,10vw,40px);
-            height: 50px;
-            font-family: 'Secular One';
-            text-align: center;
-            font-size: clamp(0.2vw,8vw,17px);
-            border: none;
-            border-radius: 5px;
-            margin: clamp(0.3vw,0.5vw,2px);
-            padding:0;
-
-        }
-
-        #keyboard .letter {
-            background-color: rgb(209, 209, 209);
-            color: black;
-        }
-
-        #keyboard .send {
-            color: rgb(255, 255, 255);
-            width: clamp(1.5vw,25vw,100px);
-            background-color: rgb(110, 110, 110);
-        }
-        #keyboard .clear{
-            color: rgb(235, 235, 235);
-            /* width: 70px; */
-            background-color: rgb(110, 110, 110);
-        }
-        #statsModal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-
-  #statsContent {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
-    font-family: 'Rubik', sans-serif;
-    text-align: center;
-    width: clamp(280px, 90vw, 400px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    position: relative;
-    visibility: hidden;
-
-  }
-
-  .statsTitle {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #222;
-  }
-
-  #statsTable {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .statsRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border-bottom: 1px solid #ddd;
-    border-radius: 10px;
-    background: #f4f6f8;
-    transition: background 0.3s ease;
-  }
-
-  .statsRow.highlight {
-    background-color: #fff8dc;
-    font-weight: bold;
-  }
-
-  .statsLabel {
-    flex: 1;
-    text-align: right;
-    font-size: 14px;
-    color: #333;
-  }
-
-  .statsBar {
-    flex: 3;
-    height: 14px;
-    background-color: #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 0 10px;
-  }
-
-  .statsFill {
-    height: 100%;
-    background-color: #6aaa64;
-    transition: width 0.4s ease;
-  }
-
-  .statsRow.highlight .statsFill {
-    background-color: #facc15;
-  }
-
-  .statsPercent {
-    width: 40px;
-    font-size: 12px;
-    text-align: left;
-    color: #333;
-  }
-
-  #closeStats {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    border: none;
-    background: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: #999;
-    transition: color 0.2s ease;
-  }
-
-  #closeStats:hover {
-    color: #000;
-  }
-
-      </style> 
-    <script>
-    </script>
-    <div id="keyboard">
-        <div>
-
-            <button class="letter" onclick="clickLetter(this.value)" value="ק" id="ק">ק</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ר" id="ר">ר</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="א" id="א">א</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
-            <button id="clear" class="clear" onclick="eraseLetter()"><img src="backspace-erase.svg" id="svgclear" style="width:clamp(0.8vw,5vw,15px);"></button>
-        </div>
-        <div>
-            <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ד" id="ד">ד</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ג" id="ג">ג</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="כ" id="כ">כ</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ע" id="ע">ע</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="י" id="י">י</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ח" id="ח">ח</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ל" id="ל">ל</button>
-        </div>
-        <div>
-            <button class="letter" onclick="clickLetter(this.value)" value="ז" id="ז">ז</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ס" id="ס">ס</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ב" id="ב">ב</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ה" id="ה">ה</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="נ" id="נ">נ</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="מ" id="מ">מ</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="צ" id="צ">צ</button>
-            <button class="letter" onclick="clickLetter(this.value)" value="ת" id="ת">ת</button>
-        </div>
-        <div><button class="send" id="send" value="שליחה" onclick="sendWord()">שליחה</button>
-        </div>
-        <div>
-        </div>
-    </div><!-- end #keyboard -->
-    <a href="https://ko-fi.com/yairhasfari">
-    <div id="coffee">
-        ☕ אפשר להזמין אותי לקפה  
-    </div></a>
-    <div id="statsModal" style="visibility: hidden;">
-        <div id="statsContent">
-          <button onclick="closeStats()" id="closeStats">✖</button>
-          <h3 id="statsTitle">:התפלגות ניחושים להיום</h3>
-          <div id="statsTable"></div>
-        </div>
+  <div id="container">
+      <div class="row" id="row1">
+          <div class="tile" id="tile11" data-animation="idle"></div>
+          <div class="tile" id="tile12" data-animation="idle"></div>
+          <div class="tile" id="tile13" data-animation="idle"></div>
+          <div class="tile" id="tile14" data-animation="idle"></div>
+          <div class="tile" id="tile15" data-animation="idle"></div>
       </div>
-    <script src="hebwords.js"></script>
-    <script src="wordlist.js"></script>
-    <script src="main.js"></script>
+      <div class="row" id="row2">
+          <div class="tile" id="tile21" data-animation="idle"></div>
+          <div class="tile" id="tile22" data-animation="idle"></div>
+          <div class="tile" id="tile23" data-animation="idle"></div>
+          <div class="tile" id="tile24" data-animation="idle"></div>
+          <div class="tile" id="tile25" data-animation="idle"></div>
+      </div>
+      <div class="row" id="row3">
+          <div class="tile" id="tile31" data-animation="idle"></div>
+          <div class="tile" id="tile32" data-animation="idle"></div>
+          <div class="tile" id="tile33" data-animation="idle"></div>
+          <div class="tile" id="tile34" data-animation="idle"></div>
+          <div class="tile" id="tile35" data-animation="idle"></div>
+      </div>
+      <div class="row" id="row4">
+          <div class="tile" id="tile41" data-animation="idle"></div>
+          <div class="tile" id="tile42" data-animation="idle"></div>
+          <div class="tile" id="tile43" data-animation="idle"></div>
+          <div class="tile" id="tile44" data-animation="idle"></div>
+          <div class="tile" id="tile45" data-animation="idle"></div>
+      </div>
+      <div class="row" id="row5">
+          <div class="tile" id="tile51" data-animation="idle"></div>
+          <div class="tile" id="tile52" data-animation="idle"></div>
+          <div class="tile" id="tile53" data-animation="idle"></div>
+          <div class="tile" id="tile54" data-animation="idle"></div>
+          <div class="tile" id="tile55" data-animation="idle"></div>
+      </div>
+      <div class="row" id="row6">
+          <div class="tile" id="tile61" data-animation="idle"></div>
+          <div class="tile" id="tile62" data-animation="idle"></div>
+          <div class="tile" id="tile63" data-animation="idle"></div>
+          <div class="tile" id="tile64" data-animation="idle"></div>
+          <div class="tile" id="tile65" data-animation="idle"></div>
+      </div>
+  </div>
+  <style>
+      #keyboard {
+          display: flexbox;
+          padding-top: 10px;
+          border-radius: 10px;
+          width: 100vw;
+          text-align: center;
+          
+      }
+
+      #keyboard div {
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          margin-right:14px;
+          
+      }
+
+
+      #keyboard button {
+          touch-action: manipulation;
+          width: clamp(1vw,10vw,40px);
+          height: 50px;
+          font-family: 'Secular One';
+          text-align: center;
+          font-size: clamp(0.2vw,8vw,17px);
+          border: none;
+          border-radius: 5px;
+          margin: clamp(0.3vw,0.5vw,2px);
+          padding:0;
+
+      }
+
+      #keyboard .letter {
+          background-color: rgb(209, 209, 209);
+          color: black;
+      }
+
+      #keyboard .send {
+          color: rgb(255, 255, 255);
+          width: clamp(1.5vw,25vw,100px);
+          background-color: rgb(110, 110, 110);
+      }
+      #keyboard .clear{
+          color: rgb(235, 235, 235);
+          /* width: 70px; */
+          background-color: rgb(110, 110, 110);
+      }
+      #statsModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#statsContent {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  font-family: 'Rubik', sans-serif;
+  text-align: center;
+  width: clamp(280px, 90vw, 400px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+  visibility: hidden;
+
+}
+
+.statsTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+#statsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f4f6f8;
+  transition: background 0.3s ease;
+}
+
+.statsRow.highlight {
+  background-color: #fff8dc;
+  font-weight: bold;
+}
+
+.statsLabel {
+  flex: 1;
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+}
+
+.statsBar {
+  flex: 3;
+  height: 14px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 10px;
+}
+
+.statsFill {
+  height: 100%;
+  background-color: #6aaa64;
+  transition: width 0.4s ease;
+}
+
+.statsRow.highlight .statsFill {
+  background-color: #facc15;
+}
+
+.statsPercent {
+  width: 40px;
+  font-size: 12px;
+  text-align: left;
+  color: #333;
+}
+
+#closeStats {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+#closeStats:hover {
+  color: #000;
+}
+
+    </style> 
+  <script>
+  </script>
+  <div id="keyboard">
+      <div>
+
+          <button class="letter" onclick="clickLetter(this.value)" value="ק" id="ק">ק</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ר" id="ר">ר</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="א" id="א">א</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ט" id="ט">ט</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ו" id="ו">ו</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="פ" id="פ">פ</button>
+          <button id="clear" class="clear" onclick="eraseLetter()"><img src="backspace-erase.svg" id="svgclear" style="width:clamp(0.8vw,5vw,15px);"></button>
+      </div>
+      <div>
+          <button class="letter" onclick="clickLetter(this.value)" value="ש" id="ש">ש</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ד" id="ד">ד</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ג" id="ג">ג</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="כ" id="כ">כ</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ע" id="ע">ע</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="י" id="י">י</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ח" id="ח">ח</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ל" id="ל">ל</button>
+      </div>
+      <div>
+          <button class="letter" onclick="clickLetter(this.value)" value="ז" id="ז">ז</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ס" id="ס">ס</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ב" id="ב">ב</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ה" id="ה">ה</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="נ" id="נ">נ</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="מ" id="מ">מ</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="צ" id="צ">צ</button>
+          <button class="letter" onclick="clickLetter(this.value)" value="ת" id="ת">ת</button>
+      </div>
+      <div><button class="send" id="send" value="שליחה" onclick="sendWord()">שליחה</button>
+      </div>
+      <div>
+      </div>
+  </div><!-- end #keyboard -->
+  <a href="https://ko-fi.com/yairhasfari">
+  <div id="coffee">
+      ☕ אפשר להזמין אותי לקפה  
+  </div></a>
+  <div id="statsModal" style="visibility: hidden;">
+      <div id="statsContent">
+        <button onclick="closeStats()" id="closeStats">✖</button>
+        <h3 id="statsTitle">:התפלגות ניחושים להיום</h3>
+        <div id="statsTable"></div>
+      </div>
+    </div>
+  <script src="hebwords.js"></script>
+  <script src="wordlist.js"></script>
+  <script src="main.js"></script>
 
 </body>
 
