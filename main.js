@@ -28,7 +28,7 @@ const summerClockStartDate = new Date(2022,2,26)
 let today = new Date();
 //word index is the numOfWordale calculated later on
 let pickedWord = pickWord();
-//set the timer for next wordale:
+//set the timer for next wordale
 countDownTimer();
 
 //load statistics:
@@ -46,15 +46,14 @@ fail: 3
 const userGuess = 3;
 
 function pickWord() {
-//today = new Date();
-//var differenceInTime = today.getTime() - startDate.getTime();
-    var differenceInTime = today.getTime() - summerClockStartDate.getTime();
-
+//This is for WinterClock, please uncomment differenceInTime equation and also differenceInDays equation.
+var differenceInTime = today.getTime() - startDate.getTime();
 // To calculate the no. of days between two dates
-//var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
-
-var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
-
+var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)); //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
+ //This is for SummerClock, please uncomment differenceInTime equation and also differenceInDays equation.
+   
+//var differenceInTime = today.getTime() - summerClockStartDate.getTime();
+//var differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24)) + 74; //added 74 since it screwed the 1 hour difference between gmt+3 and gmt+2; 
 numOfWordale = differenceInDays;
 
 return listOfWords[differenceInDays];
@@ -209,6 +208,7 @@ let greenIndices = [];
 let yellowIndices = [];
 let greyIndices = [];
 let usedYellowIndices = [];
+console.log(pickedWord);
 for (i = 0; i <= 4; i++) {
     //if letter exists in place:
     if (compareLetters(currentWord[i], pickedWord[i])) {
