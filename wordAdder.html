@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordAdder Admin Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .password-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="password"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        .word-display {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .info {
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+        .copy-section {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+        .copy-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .copy-content {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+        .file-actions {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WordAdder Admin Tool</h1>
+        <div id="passwordSection" class="password-section">
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button id="submitPassword">Access Tool</button>
+        </div>
+        <div id="mainContent" style="display: none;">
+            <p id="status">Loading files from the same folder...</p>
+            <div id="content" style="display: none;">
+                <button id="randomBtn">Get Random Unused Word</button>
+                <div class="word-display" id="wordDisplay">Select a word</div>
+                <div class="info" id="info"></div>
+                <button id="addWordlistBtn" style="display: none;">Add to Wordlist</button>
+                <button id="addHebwordsBtn" style="display: none;">Add to Hebwords</button>
+                <div class="file-actions">
+                    <button id="copyWordlistBtn">Copy Wordlist Additions</button>
+                </div>
+                <div class="copy-section">
+                    <h3>Wordlist Additions (Copy this):</h3>
+                    <div class="copy-content" id="copyWordlist"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bibleWords = [];
+        let listOfWords = [];
+        let hebWords = [];
+        let hebWordsString = '';
+        let currentWord = '';
+        let originalListLength = 0;
+
+        document.getElementById('submitPassword').addEventListener('click', checkPassword);
+        document.getElementById('randomBtn').addEventListener('click', getRandomWord);
+        document.getElementById('addWordlistBtn').addEventListener('click', addToWordlist);
+        document.getElementById('addHebwordsBtn').addEventListener('click', addToHebwords);
+        document.getElementById('copyWordlistBtn').addEventListener('click', copyWordlist);
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === '1234') {
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                loadFiles();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Password check already handles loading
+        });
+
+        function loadFiles() {
+            const status = document.getElementById('status');
+            const basePath = '.';
+
+            Promise.all([
+                fetch(`${basePath}/bibleNouns5Letters.txt`).then(r => r.ok ? r.text() : Promise.reject('Bible file failed')),
+                fetch(`${basePath}/wordlist.js`).then(r => r.ok ? r.text() : Promise.reject('Wordlist file failed')),
+                fetch(`${basePath}/hebwords.js`).then(r => r.ok ? r.text() : Promise.reject('Hebwords file failed'))
+            ]).then(([bibleContent, wordlistContent, hebwordsContent]) => {
+                bibleWords = bibleContent.split('\n').map(w => w.trim()).filter(w => w);
+
+                const listOfWordsMatch = wordlistContent.match(/let listOfWords = \[([\s\S]*?)\];/);
+                if (!listOfWordsMatch) {
+                    status.textContent = 'Could not parse listOfWords from wordlist.js';
+                    return;
+                }
+                listOfWords = eval('[' + listOfWordsMatch[1] + ']');
+                originalListLength = listOfWords.length;
+
+                const hebWordsMatch = hebwordsContent.match(/const hebWords = "([\s\S]*?)";/);
+                if (!hebWordsMatch) {
+                    status.textContent = 'Could not parse hebWords from hebwords.js';
+                    return;
+                }
+                hebWordsString = hebWordsMatch[1];
+                hebWords = hebWordsString.split(' ');
+
+                status.textContent = 'Files loaded successfully. Click the button below to pick a random unused word.';
+                document.getElementById('content').style.display = 'block';
+                updateCopyDisplay();
+            }).catch(error => {
+                status.textContent = `Automatic file load failed: ${error}.`;
+                status.textContent += ' Serve this folder with a local server and reload the page.';
+            });
+        }
+
+        function getRandomWord() {
+            const unusedWords = bibleWords.filter(word => countOccurrences(listOfWords, word) === 0);
+            if (unusedWords.length === 0) {
+                alert('No unused words left.');
+                return;
+            }
+            currentWord = unusedWords[Math.floor(Math.random() * unusedWords.length)];
+            updateWordDisplay();
+        }
+
+        function countOccurrences(arr, word) {
+            return arr.filter(w => w === word).length;
+        }
+
+        function updateWordDisplay() {
+            document.getElementById('wordDisplay').textContent = currentWord;
+            const count = countOccurrences(listOfWords, currentWord);
+            const inHebwords = hebWords.includes(currentWord);
+            document.getElementById('info').textContent = `Used in wordlist: ${count}, In hebwords: ${inHebwords ? 'Yes' : 'No'}`;
+            document.getElementById('addWordlistBtn').style.display = count === 0 ? 'inline-block' : 'none';
+            document.getElementById('addHebwordsBtn').style.display = !inHebwords ? 'inline-block' : 'none';
+        }
+
+        function addToWordlist() {
+            listOfWords.push(currentWord);
+            updateCopyDisplay();
+            updateWordDisplay();
+        }
+
+        function addToHebwords() {
+            hebWords.push(currentWord);
+            hebWordsString += ' ' + currentWord;
+            updateCopyDisplay();
+            updateWordDisplay();
+        }
+
+        function updateCopyDisplay() {
+            const newWords = listOfWords.slice(originalListLength);
+            if (newWords.length > 0) {
+                const lastOriginal = listOfWords[originalListLength - 1];
+                const additions = [lastOriginal, ...newWords].map(w => `"${w}"`).join(',\n');
+                document.getElementById('copyWordlist').textContent = additions;
+            } else {
+                document.getElementById('copyWordlist').textContent = 'No new words added yet.';
+            }
+        }
+
+        function copyWordlist() {
+            const text = document.getElementById('copyWordlist').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy. Please select and copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>
