@@ -97,6 +97,7 @@ if (win === false) {
             }
             console.log("sendword");
             compareWords();//compares words and does the rest fills tiles accordingly
+            if (wordCount === 1) { const b = document.getElementById('rakregaBanner'); if (b) b.classList.add('closing'); }
             rowCount++;
             answersLetters.push(currentWord);//keeps the word in answers array (not the colors)
             saveUserData();//saves answers to localStorage
@@ -148,6 +149,8 @@ function openShareNotificationLong() {
 document.getElementById('notify2').style.height = "5%";
 document.getElementById('notify2').style.visibility = "visible"; // הוסף שורה זו
 document.getElementById('shareButton').style.visibility = "visible";
+const b = document.getElementById('rakregaBanner');
+if (b) { b.classList.remove('closing'); }
 }
 
 

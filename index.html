@@ -217,6 +217,10 @@ console.log(countPlayersPerDay());
   <!-- End Google Tag Manager (noscript) -->
   <!-- <h3 id="demo"></h3> -->
 
+  <a id="rakregaBanner" href="https://rakregah.netlify.app" target="_blank">
+    <span id="rakregaInner">רק רגע - לחצו לעוד משחקים ◄</span>
+  </a>
+
   <div id="notify">
   </div>
   <div id="notify2">
@@ -312,11 +316,88 @@ flex-shrink: 1;
 cursor: pointer;
 }
 
+#moreGamesButton {
+background: linear-gradient(135deg, #5c9e56 0%, #3d7a6b 100%);
+color: white;
+border: none;
+padding: 5px 10px;
+border-radius: 12px;
+flex-shrink: 1;
+cursor: pointer;
+font-family: 'Secular One', sans-serif;
+font-size: inherit;
+white-space: nowrap;
+text-decoration: none;
+font-weight: bold;
+box-shadow: 0 2px 8px rgba(80, 160, 100, 0.35);
+transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#moreGamesButton:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(80, 160, 100, 0.55);
+}
+
 #notify2 {
 height: 0;
 overflow: hidden;
 visibility: hidden;
 transition: height 0.2s ease;
+}
+
+#rakregaBanner {
+  display: flex;
+  justify-content: center;
+  margin: 4px auto 6px;
+  text-decoration: none;
+  max-height: 60px;
+  overflow: hidden;
+  animation: rakregaBounceIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             rakregaPulse 4s ease-in-out 2s infinite;
+  transition: max-height 0.4s ease, opacity 0.35s ease, margin 0.35s ease;
+}
+
+#rakregaBanner.closing {
+  animation: none;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  pointer-events: none;
+}
+
+#rakregaInner {
+  display: inline-block;
+  background: linear-gradient(135deg, #8b3fc8 0%, #5b1fa8 100%);
+  color: white;
+  padding: 8px 26px;
+  border-radius: 22px;
+  font-family: 'Secular One', sans-serif;
+  font-size: clamp(12px, 3.8vw, 15px);
+  white-space: nowrap;
+  box-shadow: 0 3px 14px rgba(120, 50, 200, 0.45);
+  letter-spacing: 0.3px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+#rakregaBanner:hover #rakregaInner {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 6px 20px rgba(120, 50, 200, 0.65);
+}
+
+@keyframes rakregaBounceIn {
+  0%   { transform: translateY(-25px); opacity: 0; }
+  55%  { transform: translateY(6px);   opacity: 1; }
+  75%  { transform: translateY(-4px); }
+  90%  { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes rakregaPulse {
+  0%, 100% { transform: translateY(0); }
+  8%        { transform: translateY(-5px); }
+  16%       { transform: translateY(0); }
+  22%       { transform: translateY(-3px); }
+  30%       { transform: translateY(0); }
 }
 
 
