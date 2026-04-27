@@ -200,6 +200,7 @@ console.log(1111);
 sendResultToFirebase(result);  // זו הפונקציה שאתה צריך לכתוב/השתמש בה
 console.log(22222);
 localStorage.setItem(alreadySentKey, "true");
+notifyRakRegaDone();
 }
 function compareWords() {
 let answer = [];
@@ -795,4 +796,17 @@ document.getElementById('instructions').style.display = 'block';
 function closeInstructions() {
 document.getElementById('instructions').style.display = 'none';
 }
+
+// Notify RakRega portal that today's Wordale is done.
+// Runs on load (for already-played case) and on game end (handleGameEnd above).
+function notifyRakRegaDone() {
+    try { window.opener?.postMessage({ type: 'wordale-complete' }, '*'); } catch(e) {}
+}
+// Small delay so RakRega's message listener has time to register before we fire.
+setTimeout(function() {
+    const gameDateKey = getCurrentDateKey();
+    if (localStorage.getItem('resultSent-' + gameDateKey) === 'true') {
+        notifyRakRegaDone();
+    }
+}, 300);
 
