@@ -188,6 +188,23 @@ function getCurrentDateKey() {
 const today = new Date();
 return `wordle-${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 }
+function sendResultToRakRega(result) {
+  var d = new Date();
+  var dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  fetch('https://rakrega.yairhasfari.workers.dev/api/stats', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      game: 'wordale',
+      date: dateStr,
+      seconds: 0,
+      solved: result <= 6,
+      hints: 0,
+      attempts: result <= 6 ? result : 0,
+    }),
+  }).catch(function() {});
+}
+
 function handleGameEnd(result) {
 const gameDateKey = getCurrentDateKey();
 const alreadySentKey = `resultSent-${gameDateKey}`;
@@ -201,6 +218,7 @@ if (localStorage.getItem(alreadySentKey)) {
 }
 console.log(1111);
 sendResultToFirebase(result);  // זו הפונקציה שאתה צריך לכתוב/השתמש בה
+sendResultToRakRega(result);
 console.log(22222);
 localStorage.setItem(alreadySentKey, "true");
 notifyRakRegaDone();
