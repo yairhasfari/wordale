@@ -89,8 +89,15 @@ return value;
 function sendWord() {
 
 if (win === false) {
-    let x = checkSpell(currentWord);
     if (currentWord.length === 5) {
+        //exceptions like סירופ, קטשופ which end with a non-final letter:
+        if (!checkSpell(currentWord) && suffixLetterToMiddleLetter[currentWord[4]]) {
+            let nonFinalWord = currentWord.slice(0, 4) + suffixLetterToMiddleLetter[currentWord[4]];
+            if (checkSpell(nonFinalWord)) {
+                currentWord = nonFinalWord;
+                document.getElementById(`tile${rowCount}5`).innerHTML = currentWord[4];
+            }
+        }
         if (checkSpell(currentWord)) {
             if (wordCount < 7) {
                 wordCount++;
